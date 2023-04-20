@@ -3,10 +3,11 @@ from flask import Blueprint, jsonify
 
 
 class Planet():
-    def __init__(self, id, name, radius):
+    def __init__(self, id, name, radius, description):
         self.id = id 
         self.name = name 
         self.radius = radius
+        self.description = description
 
 class Moon():
     def __init__(self, id, name, radius, planet):
@@ -15,10 +16,10 @@ class Moon():
         self.radius = radius 
         self.planet = planet 
 
-mercury = Planet(1, "mercury", 1516)
-venus = Planet(2, "venus", 3760)
-earth = Planet(3, "earth", 6371)
-mars = Planet(4, "mars", 2106)
+mercury = Planet(1, "mercury", 1516, "I am the smallest planet in our solar system")
+venus = Planet(2, "venus", 3760, "I spin in the opposite direction from Earth")
+earth = Planet(3, "earth", 6371, "I am the densest planet in our solar system")
+mars = Planet(4, "mars", 2106, "I am the only planet humans sent rovers on")
 
 planet_list = [mercury, venus, earth, mars]
 
@@ -39,7 +40,8 @@ def get_planets():
         return_list.append({
             "id": planet.id,
             "name": planet.name,
-            "radius": planet.radius
+            "radius": planet.radius,
+            "description": planet.description
         })
     return jsonify(return_list), 200
 
