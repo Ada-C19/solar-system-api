@@ -17,3 +17,8 @@ Saturn= Planet (6, "Saturn", "Filler", "Sixth")
 Uranus= Planet (7, "Uranus", "Filler", "Seventh")
 Neptune = Planet(8, "Neptune", "Filler", "Eighth")
 
+Planets = [Mercury,Venus,Earth,Mars,Jupiter,Saturn,Uranus,Neptune]
+#...to get all existing planets, 
+# so that I can see a list of planets, 
+# with their id, name, description, 
+# and other data of the planet.
