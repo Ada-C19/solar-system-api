@@ -12,9 +12,9 @@ earth = Planet(3, "Earth", "medium, green, lush, home planet, in danger")
 mars = Planet(4, "Mars", "red, no water, also in danger")
 jupiter = Planet(5, "Jupiter", "largest, many moons")
 saturn = Planet(6, "Saturn", "cool rings, large")
-uranus = Planet(8, "Uranus", "large, funny name")
-neptune = Planet(7, "Neptune", "large, blue, cold")
-pluto = Planet(8, "Pluto", "dwarf planet, very cold")
+uranus = Planet(7, "Uranus", "large, funny name")
+neptune = Planet(8, "Neptune", "large, blue, cold")
+pluto = Planet(9, "Pluto", "dwarf planet, very cold")
 
 planet_list = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto]
 
@@ -33,12 +33,12 @@ def get_restaurants():
 
     return jsonify(response), 200
 
-@planet_bp.route("</id>", methods=["GET"])
+@planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
     try:
         planet_id = int(id)
     except:
-        return {"message": f"invalid {id}"}, 400
+        return {"message": f"invalid id: {id}"}, 400
     
     for planet in planet_list:
         if planet.id == planet_id:
