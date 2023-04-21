@@ -1,11 +1,12 @@
 from flask import Blueprint, jsonify
 
 class Planet:
-    def __init__(self, id, name, description, size):
+    def __init__(self, id, name, description, size, hello):
         self.id  = id
         self.name = name
         self.description = description
         self.size = size
+        self.hello = hello
 
 
 planet1 = Planet(1, "Mercury", "It has an average distance of about 57 million kilometer from the sun", 4879.4)
