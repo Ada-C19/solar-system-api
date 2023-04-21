@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, abort, make_response
+import json
 
 class Planet():
 
@@ -25,7 +26,21 @@ planets = Blueprint ("planets", __name__, url_prefix="/planets")
 @planets.route("", methods=["GET"])
 
 def return_planets():
-    return "planets"
+    planet_list = []
+
+    for planet in Planets:
+        planet_dict = {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "place": planet.place
+        }
+        planet_list.append(planet_dict)
+
+
+    planets_json = json.dumps(planet_list)
+    return planets_json
+
 
 
 
