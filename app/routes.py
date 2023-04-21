@@ -28,7 +28,28 @@ def return_planets():
     return "planets"
 
 
-#...to get all existing planets, 
-# so that I can see a list of planets, 
-# with their id, name, description, 
-# and other data of the planet.
+
+
+
+@planets.route("/<planet_id>", methods=["GET"])
+
+def returns_one_planet_info(planet_id):
+    return vars([Planets[1]]),200
+
+#     for planet in planets:
+        
+#         if planet_id == planet.id:
+#             return "jupiter"
+#             #return vars(planet), 200
+#             # return jsonify({
+#             #     "name" : planet.name
+#             #     "id" :  planet.id
+#             #     "description" : planet.description
+#             #     "place" : planet.place
+#             # })
+
+
+# #...to get all existing planets, 
+# # so that I can see a list of planets, 
+# # with their id, name, description, 
+# # and other data of the planet.
