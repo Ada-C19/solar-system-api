@@ -25,7 +25,7 @@ planet6 = Planet(
     6, "Saturn", "It has an average distance of about 1.46 million kilometer from the sun", 116460)
 
 planet7 = Planet(
-    1, "Uranus", "It has an average distance of about 2.88 million kilometer from the sun", 50724)
+    7, "Uranus", "It has an average distance of about 2.88 million kilometer from the sun", 50724)
 
 planet8 = Planet(
     8, "Neptune", "It has an average distance of about 4.5 million kilometer from the sun", 49244)
@@ -47,3 +47,20 @@ def get_planets():
                        }
         response.append(planet_dict)
     return jsonify(response), 200
+
+
+@planet_bp.route("/<id>", methods=["GET"])
+def get_one_planet(id):
+    try:
+        planet_id = int(id)
+    except ValueError:
+        return {"message": f"id {id} is invalid"}, 400
+    
+    for planet in planet_list:
+        if planet_id == planet.id:
+            return jsonify({"id": planet.id,
+                    "name": planet.name,
+                    "description": planet.description,
+                    "size": planet.size
+                    }), 200
+    return {"message":f"id {planet_id} not found"}, 404
