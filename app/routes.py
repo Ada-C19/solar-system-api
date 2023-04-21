@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response
 
 class Planet():
     def __init__(self, id, name, radius, description):
@@ -47,6 +47,26 @@ def get_planets():
         })
     return jsonify(return_list), 200
 
+@solar_system_planet.route("/<planet_id>", methods=["GET"])
+def get_planet_by_id(planet_id):
+    planet = verify_planet_id(planet_id)
+    return {
+            "id": planet.id,
+            "name": planet.name,
+            "radius": planet.radius,
+            "description": planet.description
+        }
+
+def verify_planet_id(planet_id):
+    try: 
+        planet_id = int(planet_id)
+    except ValueError:
+        abort(make_response({"message": f"Planet {planet_id} is invalid"}, 400))
+    for planet in planet_list:
+        if planet.id == planet_id:
+            return planet
+    abort(make_response({"message": "Planet {planet_id} is not found"}, 404))
+
 solar_system_moon = Blueprint("solar_system_moon", __name__, url_prefix="/solar_system/moon")
 
 @solar_system_moon.route("", methods=["GET"])
@@ -60,4 +80,24 @@ def get_planets():
             "planet name": moon.planet.name
         })
     return jsonify(return_list), 200
+
+@solar_system_moon.route("/<moon_id>", methods=["GET"])
+def get_moon_by_id(moon_id):
+    moon = verify_moon_id(moon_id)
+    return {
+            "id": moon.id,
+            "name": moon.name,
+            "radius": moon.radius,
+            "planet name": moon.planet.name
+        }
+
+def verify_moon_id(moon_id):
+    try: 
+        moon_id = int(moon_id)
+    except ValueError:
+        abort(make_response({"message": f"Moon {moon_id} is invalid"}, 400))
+    for moon in moon_list:
+        if moon.id == moon_id:
+            return moon
+    abort(make_response({"message": f"Moon {moon_id} is not found"}, 404))
 
