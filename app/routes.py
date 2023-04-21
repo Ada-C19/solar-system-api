@@ -20,4 +20,16 @@ def list_planets():
     planets_response = [vars(planet) for planet in planets]
 
     return jsonify(planets_response), 200
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def single_planet(planet_id):
+    planet_id = int(planet_id)
+    for planet in planets:
+        if planet.id == planet_id:
+            return {
+                "id":planet.id,
+                "name":planet.name,
+                "description":planet.description,
+                "color":planet.color
+            }
     
