@@ -1,7 +1,5 @@
 from flask import Blueprint, jsonify
 
-
-
 class Planet():
     def __init__(self, id, name, radius, description):
         self.id = id 
@@ -20,6 +18,10 @@ mercury = Planet(1, "mercury", 1516, "I am the smallest planet in our solar syst
 venus = Planet(2, "venus", 3760, "I spin in the opposite direction from Earth")
 earth = Planet(3, "earth", 6371, "I am the densest planet in our solar system")
 mars = Planet(4, "mars", 2106, "I am the only planet humans sent rovers on")
+jupiter = Planet(5, "jupiter", 43441, "I am more than twice as massive as all the other planets combined")
+saturn = Planet(6, "saturn", 36184, "I am the one with the ring")
+uranus = Planet(7, "uranus", 15759, "I am the coldest planet in the solar system")
+neptune = Planet(8, "neptune", 15299, "I am the only planet in our solar system not visible to the naked eye")
 
 planet_list = [mercury, venus, earth, mars]
 
@@ -58,3 +60,4 @@ def get_planets():
             "planet name": moon.planet.name
         })
     return jsonify(return_list), 200
+
