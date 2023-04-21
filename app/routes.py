@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify, abort, make_response
 
 class Planet():
 
@@ -18,6 +18,15 @@ Planets = [
     Planet(7, "Uranus", "Filler", "Seventh"),
     Planet(8, "Neptune", "Filler", "Eighth")
 ]
+
+
+planets = Blueprint ("planets", __name__, url_prefix="/planets")
+
+@planets.route("", methods=["GET"])
+
+def return_planets():
+    return "planets"
+
 
 #...to get all existing planets, 
 # so that I can see a list of planets, 
