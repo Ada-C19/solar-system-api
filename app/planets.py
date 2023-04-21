@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 class Planet:
     def __init__(self, id, name, description, size):
@@ -8,9 +8,11 @@ class Planet:
         self.size = size
 
 
-planet1 = Planet(1, "Mercury", "It has an average distance of about 57 million kilometer from the sun", 4,879.4)
+planet1 = Planet(
+    1, "Mercury", "It has an average distance of about 57 million kilometer from the sun", 4,879.4)
 
-planet2 = Planet(2, "Venus", "It has an average distance of about 108 million kilometer from the sun", 12,104)
+planet2 = Planet(
+    2, "Venus", "It has an average distance of about 108 million kilometer from the sun", 12,104)
 
 planet3 = Planet(
     3, "Earth", "It has an average distance of about 150 million kilometer from the sun", 12,742)
@@ -33,3 +35,16 @@ planet8 = Planet(
 
 planet_list = [planet1, planet2, planet3, planet4, planet5, planet6, planet7, planet8]
 
+planet_bp = Blueprint("planet",__name__,url_prefix="/planet")
+
+@planet_bp.route("", methods=["GET"])
+def get_planets():
+    response = []
+    for planet in planet_list:
+        planet_dict = {"id": planet.id,
+                       "name": planet.name,
+                       "description": planet.description,
+                       "size": planet.size
+                       }
+        response.append(planet_dict)
+    return jsonify(response), 200
