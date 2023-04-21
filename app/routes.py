@@ -8,10 +8,14 @@ class Planet:
         self.diameter=diameter
 
 planets = [
-    Planet(1, "Mercury", "closest to sun", 3031.9),
+    Planet(1, "Mercury", "smallest planet", 3031.9),
     Planet(2, "Venus", "hottest planet", 7520.8),
     Planet(3, "Earth", "our home planet", 7917.5),
-    Planet(4, "Mars", "red planet", 4212.3)
+    Planet(4, "Mars", "red planet", 4212.3),
+    Planet(5, "Jupiter", "biggest planet", 86881),
+    Planet(6, "Saturn", "ringed planet", 72367),
+    Planet(7, "Neptune", "blue planet", 30599),
+    Planet(8, "Uranus", "furthest planet", 31518)
 ]
 
 planet_bp = Blueprint("planet", __name__, url_prefix="/planets")
