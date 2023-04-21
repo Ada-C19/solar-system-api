@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 class Planet:
     def __init__(self, id, name, description):
@@ -17,3 +17,34 @@ neptune = Planet(7, "Neptune", "large, blue, cold")
 pluto = Planet(8, "Pluto", "dwarf planet, very cold")
 
 planet_list = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto]
+
+planet_bp = Blueprint("planet", __name__, url_prefix="/planet")
+
+@planet_bp.route("", methods=["GET"])
+def get_restaurants():
+    response = []
+    for planet in planet_list:
+        planet_dict = {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description
+        }
+        response.append(planet_dict)
+
+    return jsonify(response), 200
+
+@planet_bp.route("</id>", methods=["GET"])
+def get_one_planet(id):
+    try:
+        planet_id = int(id)
+    except:
+        return {"message": f"invalid {id}"}, 400
+    
+    for planet in planet_list:
+        if planet.id = planet_id:
+            return jsonify({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description}), 200
+    
+    return jsonify({"message": f"id {planet_id} not found"}), 404
