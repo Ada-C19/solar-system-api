@@ -41,7 +41,7 @@ def get_one_planet(id):
         return {"message": f"invalid {id}"}, 400
     
     for planet in planet_list:
-        if planet.id = planet_id:
+        if planet.id == planet_id:
             return jsonify({
             "id": planet.id,
             "name": planet.name,
