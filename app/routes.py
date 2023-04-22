@@ -36,7 +36,11 @@ def handle_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def handle_planet(planet_id):
-    planet_id = int(planet_id)
+    try: 
+        planet_id = int(planet_id)
+    except:
+        return {"message": f"Planet with id {planet_id} is invalid"}, 400
+
 
 
     for planet in planets:
