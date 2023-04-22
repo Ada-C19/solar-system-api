@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify    
 
 class Planet:
     def __init__(self, id, name, description, distance_from_the_sun): 
@@ -7,6 +7,7 @@ class Planet:
         self.description = description
         self.distance_from_the_sun = distance_from_the_sun
         #distance from the sun measured in AU--Astronmical Units
+
 planets = [
     Planet(1, "Mercury", "The smallest planet; pitted and streaky, brownish-gray", 0.39),
     Planet(2, "Venus", "A fireball with temperatures hot enough to melt lead, covered in thick clouds", 0.72),
@@ -18,9 +19,20 @@ planets = [
     Planet(8, "Neptune", "A blue gas giant with a stormy center and its own ring system", 30.06),
 ]
 solar_system_bp = Blueprint('solar_system', __name__)
-
+planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
 @solar_system_bp.route('/solar_system', methods=['GET'])
+@planets_bp.route("", methods=['GET'])
+def handle_planets():
+    planets_response = []
+    for planet in planets:
+        planets_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "distance_from_the_sun": planet.distance_from_the_sun,  
+        })
+    return jsonify(planets_response)
 
 def get_solar_system():
     return {"name": "Solar System"}
