@@ -34,5 +34,22 @@ def handle_planets():
         })
     return jsonify(planets_response)
 
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def handle_planet(planet_id):
+    planet_id = int(planet_id)
+
+
+    for planet in planets:
+        if planet.id == planet_id:
+            return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "distance_from_the_sun": planet.distance_from_the_sun,
+            }
+        return {"message": f"Planet with id {planet_id} was not found"}, 404
+    
+    
+
 def get_solar_system():
     return {"name": "Solar System"}
