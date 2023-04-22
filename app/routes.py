@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify    
+from flask import Blueprint, jsonify, abort, make_response, request    
 
 class Planet:
     def __init__(self, id, name, description, distance_from_the_sun): 
@@ -21,8 +21,25 @@ planets = [
 solar_system_bp = Blueprint('solar_system', __name__)
 planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
+def validate_planet(planet_id):
+    #handle invalid  planet_id, return 400
+    try: 
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"Planet with id {planet_id} is invalid"}, 400))
+    
+    #search for planet_id in planets
+    for planet in planets:
+        if planet.id == planet_id:
+            return planet
+        
+    #if planet_id not found, return 404
+    abort(make_response({"message": f"Planet with id {planet_id} was not found"}, 404))
+
+
 @solar_system_bp.route('/solar_system', methods=['GET'])
 @planets_bp.route("", methods=['GET'])
+
 def handle_planets():
     planets_response = []
     for planet in planets:
@@ -36,24 +53,15 @@ def handle_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def handle_planet(planet_id):
-    try: 
-        planet_id = int(planet_id)
-    except:
-        return {"message": f"Planet with id {planet_id} is invalid"}, 400
+    planet = validate_planet(planet_id)
 
 
-
-    for planet in planets:
-        if planet.id == planet_id:
-            return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "distance_from_the_sun": planet.distance_from_the_sun,
-            }
-        return {"message": f"Planet with id {planet_id} was not found"}, 404
-    
-    
+    return {
+        "id": planet.id,
+        "name": planet.name,
+        "description": planet.description,
+        "distance_from_the_sun": planet.distance_from_the_sun,
+    }
 
 def get_solar_system():
     return {"name": "Solar System"}
