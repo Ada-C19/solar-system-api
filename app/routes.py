@@ -25,9 +25,16 @@ planets = Blueprint ("planets", __name__, url_prefix="/planets")
 
 @planets.route("", methods=["GET"])
 
+#to get all existing planets
+#see a list of planets and their attributes
+# def request_planets():
+#     all_planets = Planets[id(name,description,place)]
+#     return jsonify(all_planets)
+
+# returns a dictionary
 def return_planets():
     planet_list = []
-
+    
     for planet in Planets:
         planet_dict = {
             "id": planet.id,
@@ -43,15 +50,18 @@ def return_planets():
 
 
 
-
-
-
 @planets.route("/<planet_id>", methods=["GET"])
 
 def returns_one_planet_info(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        return {"message":f"planet {planet_id} invalid"}, 400
     for planet in Planets:
         if int(planet_id) == planet.id:
             return vars(planet), 200
+    return {"message":f"planet {planet_id} not found"}, 404
+        
 #             #return vars(planet), 200
 #             # return jsonify({
 #             #     "name" : planet.name
