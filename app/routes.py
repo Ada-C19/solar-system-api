@@ -20,3 +20,5 @@ planets = [
     Planet(7, "Uranus", "Orbits on its side! Clouds of hydrogen sulfide makes it smell like rotten eggs. Seventh planet from the Sun.", "Ice giant"),
     Planet(8, "Neptune", "Coldest planet in the solar system; stormy and bright blue. Eighth planet from the Sun.", "Ice giant"),
 ]
+
+planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
