@@ -5,12 +5,12 @@ class Planet:
         self.id = id
         self.name = name
         self.description = description
-        self.diameter=diameter
+        self.diameter = diameter
 
 planets = [
     Planet(1, "Mercury", "smallest planet", 3031.9),
     Planet(2, "Venus", "hottest planet", 7520.8),
-    Planet(3, "Earth", "our home planet", 7917.5),
+    Planet(3, "Earth", "home planet", 7917.5),
     Planet(4, "Mars", "red planet", 4212.3),
     Planet(5, "Jupiter", "biggest planet", 86881),
     Planet(6, "Saturn", "ringed planet", 72367),
