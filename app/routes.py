@@ -27,9 +27,9 @@ planets = [
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
-
 @planets_bp.route("", methods=["GET"])
 def show_all_planets():
+    """Response body in JSON format for a request to see all planetary information."""
     planets_response = []
     for planet in planets:
         planets_response.append(
