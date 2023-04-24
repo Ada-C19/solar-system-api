@@ -25,7 +25,9 @@ planets = [
     Planet(8, "Neptune", "Coldest planet in the solar system; stormy and bright blue. Eighth planet from the Sun.", "Ice giant"),
 ]
 
+# Instantiates a Blueprint
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
+
 
 @planets_bp.route("", methods=["GET"])
 def show_all_planets():
@@ -41,3 +43,18 @@ def show_all_planets():
             }
         )
     return jsonify(planets_response)
+
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+# Defines an endpoint that returns a response for one planet with its id, title, description, and type
+def display_one_planet(planet_id):
+    """Returns response body: dictionary literal for one planet with matching planet_id"""
+    planet_id = int(planet_id)
+    for planet in planets:
+        if planet.id == planet_id:
+            return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "type": planet.type
+            }
