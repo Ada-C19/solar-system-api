@@ -1,13 +1,3 @@
-# Define a Planet class with the attributes id, name, 
-# and description, and one additional attribute
-
-class Planet:
-    def __init__(self, id, name, description, solar_day):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.solar_day = solar_day 
-
 
 planets = [
     Planet(1, "Mercury", "smallest planet", 176.0),
