@@ -7,6 +7,15 @@ class Planet:
         self.description = description
         self.diameter = diameter
 
+    def make_dict(self):
+        return dict(
+            id=self.id,
+            name=self.name,
+            description=self.description,
+            diameter=self.diameter
+        )
+
+
 planets = [
     Planet(1, "Mercury", "smallest planet", 3031.9),
     Planet(2, "Venus", "hottest planet", 7520.8),
@@ -22,21 +31,13 @@ planet_bp = Blueprint("planet", __name__, url_prefix="/planets")
 
 @planet_bp.route("", methods=["GET"])
 def read_planets():
-    planet_list = [make_planet_dict(planet) for planet in planets]
+    planet_list = [planet.make_dict() for planet in planets]
     return jsonify(planet_list)
 
 @planet_bp.route("/<planet_id>", methods=["GET"])
 def handle_planet(planet_id):
     planet = validate_planet(planet_id)
     return planet
-
-def make_planet_dict(planet):
-    return dict(
-        id=planet.id,
-        name=planet.name,
-        description=planet.description,
-        diameter=planet.diameter
-    )
 
 def validate_planet(planet_id):
     try:
@@ -46,6 +47,6 @@ def validate_planet(planet_id):
 
     for planet in planets:
         if planet_id == planet.id:
-            return make_planet_dict(planet)
+            return planet.make_dict()
         
     abort(make_response({"message": f"planet {planet_id} not found"}, 404))
