@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response
 
 
 class Planet:
@@ -44,9 +44,10 @@ def show_all_planets():
         )
     return jsonify(planets_response)
 
+# Defines an endpoint that returns a response for one planet with its id, title, description, and type
+
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
-# Defines an endpoint that returns a response for one planet with its id, title, description, and type
 def display_one_planet(planet_id):
     """Returns response body: dictionary literal for one planet with matching planet_id"""
 
