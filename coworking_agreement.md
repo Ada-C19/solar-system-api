@@ -4,27 +4,27 @@ Talk through each section with your partner. Add notes on what you discussed and
 
 ## Accessibility Needs
 *What does each team member need access to in order to succeed and show up the best they can?*
-Allie - 
+Allie - The repo fork which we now have.
 Amber - Just the repo, and we have that sorted! And red bull. Lots of red bull.
 
 ## Collaboration vs. individual work expectations
 *Clarify your collaboration expectations- does your group want to write code together all of the time? Or divide work to do independently, then come together to share accomplishments? What tools and technologies can help your collaboration?*
-Allie - 
+Allie - I'm open to either way or a mix of both.
 Amber - I'm okay doing it either way. As we found out last project, some things can be done independently while others have to be online/paired as other parts may rely on previous code.
 
 ## Learning Style
 *How does each team member learn best in project settings?*
-Allie - 
+Allie - Taking the time to internalize the material.
 Amber - Working through it with notes in front of me for easy reference.
 
 ## Preferred Feedback Style
 *How does each team member best receive feedback?*
-Allie - 
+Allie - Verbally, with lots of fluff!
 Amber - 
 
 ## One Team Communication Skill to Improve
 *What is a teamwork-related skill you want to work on?*
-Allie - 
+Allie - To not be shy to explain my thought process.
 Amber - I'm not the best at communication, so I'd love to work on keeping in good contact with where I'm at. So much easier when we're on the same page!
 
 ## Optional: Other agreements
@@ -33,3 +33,6 @@ Amber - I'm not the best at communication, so I'd love to work on keeping in goo
 ## Signatures
 _Amber Shay __ _____________
 Date: ADS 4/23/23; 
+
+_Allie Soliz __ _____________
+Date: ADS 4/24/23; 
