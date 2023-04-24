@@ -14,7 +14,7 @@ class Planet:
             name=self.name,
             description=self.description,
             association=self.association)
-    
+
 
 planets = [
     Planet(1, "Mercury", "smallest planet", "Wednesday"),
@@ -36,22 +36,14 @@ def handle_planet(id):
 
     for planet in planets:
         if planet.id == id:
-            return dict(
-                id=planet.id,
-                name=planet.name,
-                description=planet.description,
-                association=planet.association)
+            return planet.make_planet_dict()
 
-    abort(make_response({'message': f'Planet {id} is invalid.'}, 404))
+    abort(make_response({'message': f'Planet {id} not found.'}, 404))
 
 
 @planets_bp.route("", methods=["GET"])
 def handle_planets():
     planets_list = []
     for planet in planets:
-        planets_list.append(dict(
-            id=planet.id,
-            name=planet.name,
-            description=planet.description,
-            association=planet.association))
+        planets_list.append(planet.make_planet_dict())
     return jsonify(planets_list)
