@@ -20,11 +20,11 @@ planets = [
     Planet(9, "Pluto", "unqualified planet", 6.375)
     ]
 
-bp = Blueprint("planets", __name__, url_prefix="/planets")
+planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-@bp.route("", methods=["GET"])
+@planets_bp.route("", methods=["GET"])  
 def handle_planets():
-    results = []
+    results = []    
     for planet in planets:
         results.append(dict(
             id=planet.id,
