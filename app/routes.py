@@ -49,6 +49,7 @@ def show_all_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def validate_planet(planet_id):
+    """Helper function that handles invalid planet_id"""
     try:
         planet_id = int(planet_id)
     except:
