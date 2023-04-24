@@ -82,7 +82,7 @@ def handle_planets():
         ))
 
     return jsonify(results)
-@bp.route("/<planet_id>", methods=["GET"])
+@planets_bp.route("/<planet_id>", methods=["GET"])
 def handle_planet(planet_id):
     planet = validate_planet(planet_id)
 
