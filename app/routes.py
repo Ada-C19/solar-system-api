@@ -58,3 +58,4 @@ def display_one_planet(planet_id):
                 "description": planet.description,
                 "type": planet.type
             }
+    return {"message": f"planet {planet_id}, not found"}, 404
