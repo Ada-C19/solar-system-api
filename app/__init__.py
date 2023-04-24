@@ -7,4 +7,7 @@ def create_app(test_config=None):
     from .routes import bp
     app.register_blueprint(bp)
 
+    from .routes import bp
+    app.register_blueprint(bp)
+
     return app
