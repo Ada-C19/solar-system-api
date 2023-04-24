@@ -49,7 +49,12 @@ def show_all_planets():
 # Defines an endpoint that returns a response for one planet with its id, title, description, and type
 def display_one_planet(planet_id):
     """Returns response body: dictionary literal for one planet with matching planet_id"""
-    planet_id = int(planet_id)
+
+    try:
+        planet_id = int(planet_id)
+    except:
+        return {"message": f"planet {planet_id} invalid"}, 400
+
     for planet in planets:
         if planet.id == planet_id:
             return {
