@@ -48,20 +48,25 @@ def show_all_planets():
 
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
-def display_one_planet(planet_id):
-    """Returns response body: dictionary literal for one planet with matching planet_id"""
-
+def validate_planet(planet_id):
     try:
         planet_id = int(planet_id)
     except:
-        return {"message": f"planet {planet_id} invalid"}, 400
+        abort(make_response({"message": f"planet {planet_id} invalid"}, 400))
 
     for planet in planets:
         if planet.id == planet_id:
-            return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "type": planet.type
-            }
-    return {"message": f"planet {planet_id}, not found"}, 404
+            return planet
+    abort(make_response({"message": f"planet {planet_id}, not found"}, 404))
+
+
+def display_one_planet(planet_id):
+    """Returns response body: dictionary literal for one planet with matching planet_id"""
+    planet = validate_planet(planet_id)
+
+    return {
+        "id": planet.id,
+        "name": planet.name,
+        "description": planet.description,
+        "type": planet.type
+    }
