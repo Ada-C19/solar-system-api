@@ -25,12 +25,12 @@ def validate_planet(id):
     try:
         id = int(id)
     except:
-        return abort(make_response({"message": f"{id} was invalid"}, 400))
+        abort(make_response({"message": f"{id} was invalid"}, 400))
     
     for planet in planets:
         if planet.id == id:
             return planet 
-    return abort(make_response({"message": f"Cat with id {id} was not found"}, 404))
+    abort(make_response({"message": f"Cat with id {id} was not found"}, 404))
 
 
 @bp.route("", methods=["GET"])
