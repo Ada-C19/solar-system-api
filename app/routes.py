@@ -26,9 +26,7 @@ planets = [
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-
-@planets_bp.route("/<id>", methods=["GET"])
-def handle_planet(id):
+def validate_planet(id):
     try:
         id = int(id)
     except ValueError:
@@ -36,14 +34,18 @@ def handle_planet(id):
 
     for planet in planets:
         if planet.id == id:
-            return planet.make_planet_dict()
-
+             return planet
     abort(make_response({'message': f'Planet {id} not found.'}, 404))
+
+@planets_bp.route("/<id>", methods=["GET"])
+def handle_planet(id):
+    planet = validate_planet(id)
+
+    return planet.make_planet_dict()
 
 
 @planets_bp.route("", methods=["GET"])
 def handle_planets():
-    planets_list = []
-    for planet in planets:
-        planets_list.append(planet.make_planet_dict())
+    planets_list = [planet.make_planet_dict() for planet in planets]
+
     return jsonify(planets_list)
