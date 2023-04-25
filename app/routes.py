@@ -36,3 +36,10 @@ def get_planets():
 
     return jsonify(planets_response), 200
 
+@planets_bp.route("/<id>", methods=["GET"])
+def get_planet(id):
+    planet = validate_planet(id)
+
+    return planet.to_dict()
+
+
