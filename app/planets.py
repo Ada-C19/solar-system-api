@@ -57,17 +57,18 @@ def add_planet():
 
     return f"id{new_planet.id}", 201
 
-# @planet_bp.route("", methods=["GET"])
-# def get_planets():
-#     response = []
-#     for planet in planet_list:
-#         planet_dict = {"id": planet.id,
-#                        "name": planet.name,
-#                        "description": planet.description,
-#                        "size": planet.size
-#                        }
-#         response.append(planet_dict)
-#     return jsonify(response), 200
+@planet_bp.route("", methods=["GET"])
+def get_planets():
+    response = []
+    all_planets = Planet.query.all()
+    for planet in all_planets:
+        planet_dict = {"id": planet.id,
+                       "name": planet.name,
+                       "description": planet.description,
+                       "size": planet.size
+                       }
+        response.append(planet_dict)
+    return jsonify(response), 200
 
 
 # @planet_bp.route("/<id>", methods=["GET"])
