@@ -20,16 +20,16 @@ from app.models.planet import Planet
 #     Planet(8, "Neptune", "blue", 30.06)
 # ]
 
-def validate_planet(planet_id):
-    try:
-        planet_id = int(planet_id)
-    except:
-        abort(make_response({'msg': f"Invalid id '{planet_id}'"}, 400))
+# def validate_planet(planet_id):
+#     try:
+#         planet_id = int(planet_id)
+#     except:
+#         abort(make_response({'msg': f"Invalid id '{planet_id}'"}, 400))
 
-    for planet in planet_list:
-        if planet.id == planet_id:
-            return planet
-    return abort(make_response({'msg': f"No planet with id {planet_id}"}, 404))
+#     for planet in planet_list:
+#         if planet.id == planet_id:
+#             return planet
+#     return abort(make_response({'msg': f"No planet with id {planet_id}"}, 404))
 
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
@@ -45,6 +45,19 @@ def create_planet():
     db.session.commit()
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
+
+@planets_bp.route("", methods=['GET'])
+def get_planets():
+    planets = Planet.query.all()
+    planets_response = []
+    for planet in planets:
+        planets_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "distance from sun": planet.distance_from_sun
+        })
+    return jsonify(planets_response)
 
 # @planets_bp.route("", methods=['GET'])
 # def handle_planets():
