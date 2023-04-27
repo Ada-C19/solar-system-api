@@ -55,7 +55,7 @@ def add_planet():
     db.session.add(new_planet)
     db.session.commit()
 
-    return {"id": new_planet.id}, 201
+    return f"id{new_planet.id}", 201
 
 # @planet_bp.route("", methods=["GET"])
 # def get_planets():
