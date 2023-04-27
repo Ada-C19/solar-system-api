@@ -19,6 +19,8 @@ def create_app(test_config=None):
     from.routes import planets
     app.register_blueprint(planets)
 
+    from app.models.Planet import Planet
+
     return app
 
 
