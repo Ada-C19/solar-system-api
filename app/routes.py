@@ -35,6 +35,25 @@ def handle_planet():
 
     return make_response(f"Planet {new_planet.name} succesfully created",201)
 
+@planets.route("", methods=["GET"])
+
+def return_all_planets():
+
+    planets= Planet.query.all()
+    planet_response = []
+
+    for planet in planets:
+        planet_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description":planet.description,
+            'place':planet.place
+        })
+    return jsonify(planet_response)
+
+
+
+
 #to get all existing planets
 #see a list of planets and their attributes
 # def request_planets():
@@ -71,6 +90,9 @@ def returns_one_planet_info(planet_id):
         if int(planet_id) == planet.id:
             return vars(planet), 200
     return {"message":f"planet {planet_id} not found"}, 404
+
+
+
         
 #             #return vars(planet), 200
 #             # return jsonify({
