@@ -1,44 +1,29 @@
-from flask import Blueprint, jsonify, abort, make_response
-
-class Planet():
-    def __init__(self, id, name, radius, description):
-        self.id = id 
-        self.name = name 
-        self.radius = radius
-        self.description = description
-
-class Moon():
-    def __init__(self, id, name, radius, planet):
-        self.id = id 
-        self.name = name 
-        self.radius = radius 
-        self.planet = planet 
-
-mercury = Planet(1, "mercury", 1516, "I am the smallest planet in our solar system")
-venus = Planet(2, "venus", 3760, "I spin in the opposite direction from Earth")
-earth = Planet(3, "earth", 6371, "I am the densest planet in our solar system")
-mars = Planet(4, "mars", 2106, "I am the only planet humans sent rovers on")
-jupiter = Planet(5, "jupiter", 43441, "I am more than twice as massive as all the other planets combined")
-saturn = Planet(6, "saturn", 36184, "I am the one with the ring")
-uranus = Planet(7, "uranus", 15759, "I am the coldest planet in the solar system")
-neptune = Planet(8, "neptune", 15299, "I am the only planet in our solar system not visible to the naked eye")
-
-planet_list = [mercury, venus, earth, mars]
-
-moon = Moon(1, "moon", 1079, earth)
-phobos = Moon(2, "phobos", 11, mars)
-deimos = Moon(3, "deimos", 6.2, mars)
-europa = Moon(4, "europa", 1560, mars)
-
-moon_list = [moon, phobos, deimos, europa]
+from flask import Blueprint, jsonify, request, make_response, abort
+from app import db
+from app.models.moon import Moon
+from app.models.planet import Planet
 
 solar_system_planet = Blueprint("solar_system_planet", __name__, url_prefix="/solar_system/planet")
 
+@solar_system_planet.route("", methods=["POST"])
+def add_planet():
+    request_body = request.get_json()
+    new_planet = Planet(
+        name = request_body["name"],
+        radius = request_body["radius"],
+        description = request_body["description"]
+    )
+    
+    db.session.add(new_planet)
+    db.session.commit()
+
+    return make_response({"message": f"Planet {new_planet.name} has been added, with the id: {new_planet.id}"}, 201)
 
 @solar_system_planet.route("", methods=["GET"])
 def get_planets():
     return_list = []
-    for planet in planet_list:
+    all_planets = Planet.query.all()
+    for planet in all_planets:
         return_list.append({
             "id": planet.id,
             "name": planet.name,
@@ -62,17 +47,34 @@ def verify_planet_id(planet_id):
         planet_id = int(planet_id)
     except ValueError:
         abort(make_response({"message": f"Planet {planet_id} is invalid"}, 400))
-    for planet in planet_list:
+    all_planets = Planet.query.all()
+    for planet in all_planets:
         if planet.id == planet_id:
             return planet
     abort(make_response({"message": "Planet {planet_id} is not found"}, 404))
 
 solar_system_moon = Blueprint("solar_system_moon", __name__, url_prefix="/solar_system/moon")
 
+@solar_system_moon.route("", methods=["POST"])
+def add_moon():
+    request_body = request.get_json()
+    new_moon = Moon(
+        name = request_body["name"],
+        radius = request_body["radius"],
+        description = request_body["description"],
+        planet_id = request_body["planet_id"]
+    )
+    
+    db.session.add(new_moon)
+    db.session.commit()
+
+    return make_response({"message": f"Planet {new_moon.name} has been added, with the id: {new_moon.id}"}, 201)
+
 @solar_system_moon.route("", methods=["GET"])
 def get_planets():
     return_list = []
-    for moon in moon_list:
+    all_moons = Moon.query.all()
+    for moon in all_moons:
         return_list.append({
             "id": moon.id,
             "name": moon.name,
@@ -96,7 +98,8 @@ def verify_moon_id(moon_id):
         moon_id = int(moon_id)
     except ValueError:
         abort(make_response({"message": f"Moon {moon_id} is invalid"}, 400))
-    for moon in moon_list:
+    all_moons = Moon.query.all()
+    for moon in all_moons:
         if moon.id == moon_id:
             return moon
     abort(make_response({"message": f"Moon {moon_id} is not found"}, 404))
