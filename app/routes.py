@@ -20,7 +20,26 @@ def create_planet():
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
-# request comes flask; allows us to read information coming in from request_body
+# endpoint to request a list of planets and their information
+@planets_bp.route("", methods=["GET"])
+def get_all_planets():
+    planets_response = []
+    planets = Planet.query.all()
+
+    for planet in planets:
+        planets_response.append(
+            {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "type": planet.type
+            }
+        )
+    
+    return jsonify(planets_response)
+
+
+
 # class Planet:
 #     """Create class Planet"""
 
