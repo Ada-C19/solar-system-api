@@ -6,7 +6,7 @@ from flask import Blueprint, jsonify, make_response, request
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 # endpoint to create a planet
-@planets_bp.route("", __name__, methods=["POST"])
+@planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
     new_planet = Planet(
