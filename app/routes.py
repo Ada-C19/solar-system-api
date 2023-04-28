@@ -44,17 +44,18 @@ planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 #     abort(make_response({"message": f"Planet with id {planet_id} was not found"}, 404))
 
 
-# @planets_bp.route("", methods=['GET'])
-# def handle_planets():
-#     planets_response = []
-#     for planet in planets:
-#         planets_response.append({
-#             "id": planet.id,
-#             "name": planet.name,
-#             "description": planet.description,
-#             "distance_from_the_sun": planet.distance_from_the_sun,
-#         })
-#     return jsonify(planets_response)
+@planets_bp.route("", methods=['GET'])
+def handle_planets():
+    planets = Planet.query.all()
+    planets_response = []
+    for planet in planets:
+        planets_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "distance_from_the_sun": planet.distance_from_the_sun,
+        })
+    return jsonify(planets_response)
 
 
 # @planets_bp.route("/<planet_id>", methods=["GET"])
@@ -73,13 +74,15 @@ planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 # def get_solar_system():
 #     return {"name": "Solar System"}
 
-@solar_system_bp.route("", methods=['POST'])
-def handle_planets():
+@planets_bp.route("/create_planet", methods=["POST"])
+def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
                         description=request_body["description"],
                         distance_from_the_sun=request_body["distance_from_the_sun"])
+                      
     db.session.add(new_planet)
     db.session.commit()
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
+
