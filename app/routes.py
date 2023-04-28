@@ -56,7 +56,6 @@ planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 #         })
 #     return jsonify(planets_response)
 
-
 # @planets_bp.route("/<planet_id>", methods=["GET"])
 # def handle_planet(planet_id):
 #     planet = validate_planet(planet_id)
@@ -73,8 +72,17 @@ planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 # def get_solar_system():
 #     return {"name": "Solar System"}
 
-@solar_system_bp.route("", methods=['POST'])
+
+@planets_bp.route("", methods=['GET'])
 def handle_planets():
+    planets = Planet.query.all()
+    planets_response = [planet.to_dict() for planet in planets]
+  
+    return jsonify(planets_response)
+
+
+@planets_bp.route("/create_planet", methods=['POST'])
+def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
                         description=request_body["description"],
