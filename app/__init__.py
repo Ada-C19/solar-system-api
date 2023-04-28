@@ -15,9 +15,11 @@ def create_app(test_config=None):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    
+
     from .routes import solar_system_bp, planets_bp
     app.register_blueprint(solar_system_bp)
     app.register_blueprint(planets_bp)
+
+    from app.models.planet import Planet
    
     return app
