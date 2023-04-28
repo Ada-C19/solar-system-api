@@ -1,6 +1,26 @@
-from flask import Blueprint, jsonify, make_response
+from app import db
+from app.models.planet import Planet
+from flask import Blueprint, jsonify, make_response, request
 
+# create an instance of Blueprint and assign to variable planets_bp
+planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
+# endpoint to create a planet
+@planets_bp.route("", __name__, methods=["POST"])
+def create_planet():
+    request_body = request.get_json()
+    new_planet = Planet(
+        name=request_body["name"],
+        description=request_body["description"],
+        type=request_body["type"]
+        )
+    
+    db.session.add(new_planet)
+    db.session.commit()
+
+    return make_response(f"Planet {new_planet.name} successfully created", 201)
+
+# request comes flask; allows us to read information coming in from request_body
 # class Planet:
 #     """Create class Planet"""
 
@@ -24,10 +44,6 @@ from flask import Blueprint, jsonify, make_response
 #     Planet(7, "Uranus", "Orbits on its side! Clouds of hydrogen sulfide makes it smell like rotten eggs. Seventh planet from the Sun.", "Ice giant"),
 #     Planet(8, "Neptune", "Coldest planet in the solar system; stormy and bright blue. Eighth planet from the Sun.", "Ice giant"),
 # ]
-
-# Instantiates a Blueprint
-planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
-
 
 # @planets_bp.route("", methods=["GET"])
 # def show_all_planets():
