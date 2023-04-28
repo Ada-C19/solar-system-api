@@ -21,8 +21,8 @@ from flask import Blueprint, jsonify, abort, make_response
 #     Planet(8, "Neptune", "A blue gas giant with a stormy center and its own ring system", 30.06),
 # ]
 
-# solar_system_bp = Blueprint('solar_system', __name__)
-# planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
+solar_system_bp = Blueprint('solar_system', __name__)
+planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
 
 # def validate_planet(planet_id):
