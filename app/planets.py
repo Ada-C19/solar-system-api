@@ -3,19 +3,6 @@ from app import db
 from app.model.planets_model import Planet
 
 
-
-
-
-# #testing change
-
-# class Planet:
-#     def __init__(self, id, name, description, size):
-#         self.id  = id
-#         self.name = name
-#         self.description = description
-#         self.size = size
-
-
 # planet1 = Planet(1, "Mercury", "It has an average distance of about 57 million kilometer from the sun", 4879.4)
 
 # planet2 = Planet(2, "Venus", "It has an average distance of about 108 million kilometer from the sun", 12104)
@@ -62,12 +49,7 @@ def get_planets():
     response = []
     all_planets = Planet.query.all()
     for planet in all_planets:
-        planet_dict = {"id": planet.id,
-                       "name": planet.name,
-                       "description": planet.description,
-                       "size": planet.size
-                       }
-        response.append(planet_dict)
+        response.append(planet.to_dict())
     return jsonify(response), 200
 
 
