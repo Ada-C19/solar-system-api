@@ -34,6 +34,19 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 def handle_planets():
     planets = Planet.query.all()
 
-    planets_response = [planet.make_planet_dict() for planet in planets]
+    planets_response = [Planet.make_planet_dict(planet) for planet in planets]
 
     return jsonify(planets_response)
+
+
+@planets_bp.route("", methods=["POST"])
+def create_planet():
+    request_body = request.get_json()
+    new_planet = Planet(name=request_body["name"],
+                        description=request_body["description"],
+                        association=request_body["association"])
+
+    db.session.add(new_planet)
+    db.session.commit()
+
+    return make_response(f'Planet {new_planet} successfully created.', 201)
