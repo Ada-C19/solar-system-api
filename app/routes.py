@@ -10,7 +10,7 @@ from flask import Blueprint, jsonify, make_response, request
 #     Planet(5, "Saturn", "the one with the rings", "Saturday")
 # ]
 
-planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
+bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 # def validate_planet(id):
 #     try:
@@ -30,21 +30,22 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 #     return planet.make_planet_dict()
 
 
-@planets_bp.route("", methods=["GET"])
+@bp.route("", methods=["GET"])
 def handle_planets():
     planets = Planet.query.all()
 
-    planets_response = [Planet.make_planet_dict(planet) for planet in planets]
+    planets_response = [Planet.make_dict(planet) for planet in planets]
 
     return jsonify(planets_response)
 
 
-@planets_bp.route("", methods=["POST"])
+@bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
                         description=request_body["description"],
-                        association=request_body["association"])
+                        association=request_body["association"],
+                        )
 
     db.session.add(new_planet)
     db.session.commit()
