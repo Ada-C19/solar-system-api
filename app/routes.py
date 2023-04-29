@@ -4,6 +4,14 @@ from flask import Blueprint, jsonify, abort, make_response, request
 
 bp = Blueprint("planets", __name__, url_prefix="/planets")
 
+@bp.route("", methods=["GET"])
+def read_all_planets():
+    planets = Planet.query.all()
+    planets_response = []
+    for planet in planets:
+        planets_response.append(planet.make_planet_dict())
+    return jsonify(planets_response)
+
 @bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
@@ -17,13 +25,7 @@ def create_planet():
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
-@bp.route("", methods=["GET"])
-def read_all_planets():
-    planets_response = []
-    planets = Planet.query.all()
-    for planet in planets:
-        planets_response.append(planet.make_planet_dict)
-    return jsonify(planets_response)
+
 
 
 # class Planet:

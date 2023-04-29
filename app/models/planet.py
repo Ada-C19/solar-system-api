@@ -7,10 +7,10 @@ class Planet(db.Model):
     description = db.Column(db.String)
     position = db.Column(db.String)
 
-def make_planet_dict(self):
-    return dict(
-        id=self.id,
-        name=self.name,
-        description=self.description,
-        position=self.position
-    )
+    def make_planet_dict(self):
+        return dict(
+            id=self.id,
+            name=self.name,
+            description=self.description,
+            position=self.position
+        )
