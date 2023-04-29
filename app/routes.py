@@ -22,15 +22,9 @@ def read_all_planets():
     planets_response = []
     planets = Planet.query.all()
     for planet in planets:
-        planets_response.append(
-            {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "position": planet.position
-            }
-        )
+        planets_response.append(planet.make_planet_dict)
     return jsonify(planets_response)
+
 
 # class Planet:
 #     def __init__(self, id, name, description, position):
