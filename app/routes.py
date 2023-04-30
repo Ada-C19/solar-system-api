@@ -1,7 +1,8 @@
 from app import db
 from app.models.planet import Planet
+from flask import Blueprint, jsonify, make_response, request, abort
 
-from flask import Blueprint, jsonify, make_response, request
+
 
 
 # class Planet:
@@ -26,50 +27,51 @@ from flask import Blueprint, jsonify, make_response, request
 
 planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
+#helper functions
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"Planet with id {planet_id} is invalid"}, 400))    
 
-# def validate_planet(planet_id):
-#     # handle invalid  planet_id, return 400
-#     try:
-#         planet_id = int(planet_id)
-#     except:
-#         abort(make_response({"message": f"Planet with id {planet_id} is invalid"}, 400))
- 
-#     # search for planet_id in planets
-#     for planet in planets:
-#         if planet.id == planet_id:
-#             return planet
-      
-#     # if planet_id not found, return 404
-#     abort(make_response({"message": f"Planet with id {planet_id} was not found"}, 404))
+    planet=Planet.query.get(planet_id)
+    
+    if not planet: 
+        abort(make_response({"message": f"Planet with id {planet_id} was not found"}, 404))
 
-
-# @planets_bp.route("", methods=['GET'])
-# def handle_planets():
-#     planets_response = []
-#     for planet in planets:
-#         planets_response.append({
-#             "id": planet.id,
-#             "name": planet.name,
-#             "description": planet.description,
-#             "distance_from_the_sun": planet.distance_from_the_sun,
-#         })
-#     return jsonify(planets_response)
-
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def handle_planet(planet_id):
-#     planet = validate_planet(planet_id)
-
-#     return {
-#         "id": planet.id,
-#         "name": planet.name,
-#         "description": planet.description,
-#         "distance_from_the_sun": planet.distance_from_the_sun,
-#     }
+    return planet
+    # handle invalid  planet_id, return 400
+    
 
 
-# @solar_system_bp.route('/solar_system', methods=['GET'])
-# def get_solar_system():
-#     return {"name": "Solar System"}
+@planets_bp.route("", methods=['GET'])
+def read_all_planets():
+    planets = Planet.query.all()
+    planets_response = []
+    for planet in planets:
+        planets_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "distance_from_the_sun": planet.distance_from_the_sun,
+        })
+    return jsonify(planets_response)
+
+@planets_bp.route("", methods=["POST"])
+def handle_planet(planet_id):
+    planet = validate_planet(planet_id)
+
+    return {
+        "id": planet.id,
+        "name": planet.name,
+        "description": planet.description,
+        "distance_from_the_sun": planet.distance_from_the_sun,
+    }
+
+
+@solar_system_bp.route('/solar_system', methods=['GET'])
+def get_solar_system():
+    return {"name": "Solar System"}
 
 
 @planets_bp.route("", methods=['GET'])
