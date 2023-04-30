@@ -61,7 +61,7 @@ def read_all_planets():
     return jsonify(planets_response)
 
 @planets_bp.route("", methods=["POST"])
-def create_planet(planet_id):
+def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
                         description=request_body["description"],
@@ -97,5 +97,14 @@ def update_planet(planet_id):
     db.session.commit()
 
     return make_response(f"Planet #{planet.id} successfully updated")
-  
+
+@'planets_bp.route("/<planet_id>", methods=["DELETE"])'
+def delete_planet(planet_id):
+    planet = validate_planet(planet_id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return make_response(f"Planet #{planet.id} successfully deleted")
+
     
