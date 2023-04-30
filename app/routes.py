@@ -3,6 +3,9 @@ from app.models.planet import Planet
 from flask import Blueprint, jsonify, make_response, request, abort
 
 
+'''Considering keeping the hard-coded planet info until such time as my
+Postman is working.  If Gabby can test and find them working, I'm okay
+with getting rid of the hard-coded info.  I'm just not sure how to test'''
 
 
 # class Planet:
@@ -40,9 +43,9 @@ def validate_planet(planet_id):
         abort(make_response({"message": f"Planet with id {planet_id} was not found"}, 404))
 
     return planet
-    # handle invalid  planet_id, return 400
     
-
+    
+#route functions
 
 @planets_bp.route("", methods=['GET'])
 def read_all_planets():
@@ -58,7 +61,20 @@ def read_all_planets():
     return jsonify(planets_response)
 
 @planets_bp.route("", methods=["POST"])
-def handle_planet(planet_id):
+def create_planet(planet_id):
+    request_body = request.get_json()
+    new_planet = Planet(name=request_body["name"],
+                        description=request_body["description"],
+                        distance_from_the_sun=request_body["distance_from_the_sun"])
+    db.session.add(new_planet)
+    db.session.commit()
+
+    return make_response(f"Planet {new_planet.name} successfully created", 201)
+ 
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def read_one_planet(planet_id):
+    planet=Planet.query.get(planet_id)
+    
     planet = validate_planet(planet_id)
 
     return {
@@ -68,27 +84,18 @@ def handle_planet(planet_id):
         "distance_from_the_sun": planet.distance_from_the_sun,
     }
 
+@planets_bp.route("", methods=['PUT'])
+def update_planet(planet_id):
+    planet = validate_planet(planet_id)
 
-@solar_system_bp.route('/solar_system', methods=['GET'])
-def get_solar_system():
-    return {"name": "Solar System"}
-
-
-@planets_bp.route("", methods=['GET'])
-def read_all_planets():
-    planets = Planet.query.all()
-    planets_response = [planet.to_dict() for planet in planets]
-  
-    return jsonify(planets_response)
-
-
-@planets_bp.route("/create_planet", methods=['POST'])
-def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(name=request_body["name"],
-                        description=request_body["description"],
-                        distance_from_the_sun=request_body["distance_from_the_sun"])
-    db.session.add(new_planet)
+
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.distance_from_the_sun = request_body["distance_from_the_sun"]
+
     db.session.commit()
 
-    return make_response(f"Planet {new_planet.name} successfully created", 201)
+    return make_response(f"Planet #{planet.id} successfully updated")
+  
+    
