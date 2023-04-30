@@ -38,9 +38,7 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 @planets_bp.route("", methods=["GET"])  
 def handle_planets():
-    results = []    
-    for planet in planets:
-        results.append(planet.to_dict())
+    results = [planet.to_dict() for planet in planets]
 
     return jsonify(results)
 
