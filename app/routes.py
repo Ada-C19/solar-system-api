@@ -73,7 +73,7 @@ planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
 
 @planets_bp.route("", methods=['GET'])
-def handle_planets():
+def read_all_planets():
     planets = Planet.query.all()
     planets_response = [planet.to_dict() for planet in planets]
   
