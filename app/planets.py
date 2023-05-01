@@ -62,6 +62,21 @@ def get_one_planet(id):
 
     return planet.to_dict(), 200
 
+# GET UPDATE
+@planet_bp.route("/<id>", methods=["PUT"])
+def update_planet(id):
+
+    planet = validate_planet(id)
+    request_data = request.get_json()
+
+    planet.name = request_data["name"]
+    planet.description = request_data["description"]
+    planet.size = request_data["size"]
+
+    db.session.commit()
+    
+    return {"message": f"planet {id} has been updated"}, 200
+
 
 #helper function
 def validate_planet(id):
