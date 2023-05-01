@@ -20,16 +20,19 @@ from app.models.planet import Planet
 #     Planet(8, "Neptune", "blue", 30.06)
 # ]
 
-# def validate_planet(planet_id):
-#     try:
-#         planet_id = int(planet_id)
-#     except:
-#         abort(make_response({'msg': f"Invalid id '{planet_id}'"}, 400))
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({'msg': f"Invalid id '{planet_id}'"}, 400))
 
-#     for planet in planet_list:
-#         if planet.id == planet_id:
-#             return planet
-#     return abort(make_response({'msg': f"No planet with id {planet_id}"}, 404))
+    planet = Planet.query.get(planet_id)
+
+    if planet:
+        return planet
+    else: 
+        return abort(make_response({'msg': f"No planet with id {planet_id}"}, 404))
+
 
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
@@ -58,6 +61,19 @@ def get_planets():
             "distance from sun": planet.distance_from_sun
         })
     return jsonify(planets_response)
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_one_planet(planet_id):
+
+    planet = validate_planet(planet_id)
+
+    return ({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "distance from sun": planet.distance_from_sun
+        }), 200
+
 
 # @planets_bp.route("", methods=['GET'])
 # def handle_planets():
