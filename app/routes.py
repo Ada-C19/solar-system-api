@@ -97,19 +97,13 @@ def update_one_planet(planet_id):
 
 
 
-# @planets_bp.route("", methods=['GET'])
-# def handle_planets():
-#     planets_as_dict = [vars(planet) for planet in planet_list]
-#     return jsonify(planets_as_dict), 200
+@planets_bp.route("/<planet_id>", methods=["DELETE"])
+def delete_one_planet(planet_id):
+    planet_to_delete = validate_planet(planet_id)
 
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def handle_planet(planet_id):
-#     planet = validate_planet(planet_id)
-#     return {
-#         "id": planet.id,
-#         "name": planet.name,
-#         "description": planet.description,
-#         "distance from sun": planet.distance_from_sun
-#     }, 200
+    db.session.delete(planet_to_delete)
+    db.session.commit()
+
+    return f"Planet {planet_to_delete.name} is deleted!", 200
 
 
