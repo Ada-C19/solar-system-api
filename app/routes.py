@@ -30,34 +30,28 @@ with getting rid of the hard-coded info.  I'm just not sure how to test'''
 
 planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
-#helper functions
+# helper functions
 def validate_planet(planet_id):
     try:
         planet_id = int(planet_id)
     except:
         abort(make_response({"message": f"Planet with id {planet_id} is invalid"}, 400))    
 
-    planet=Planet.query.get(planet_id)
-    
-    if not planet: 
+    planet = Planet.query.get(planet_id)
+
+    if not planet:
         abort(make_response({"message": f"Planet with id {planet_id} was not found"}, 404))
 
     return planet
-    
-    
-#route functions
 
-@planets_bp.route("", methods=['GET'])
+# route functions
+
+@planets_bp.route("", methods=["GET"])
 def read_all_planets():
     planets = Planet.query.all()
     planets_response = []
     for planet in planets:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "distance_from_the_sun": planet.distance_from_the_sun,
-        })
+        planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
 @planets_bp.route("", methods=["POST"])
@@ -73,8 +67,6 @@ def create_planet():
  
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
-    planet=Planet.query.get(planet_id)
-    
     planet = validate_planet(planet_id)
 
     return {
@@ -84,7 +76,7 @@ def read_one_planet(planet_id):
         "distance_from_the_sun": planet.distance_from_the_sun,
     }
 
-@planets_bp.route("", methods=['PUT'])
+@planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
     planet = validate_planet(planet_id)
 
@@ -98,7 +90,7 @@ def update_planet(planet_id):
 
     return make_response(f"Planet #{planet.id} successfully updated")
 
-@'planets_bp.route("/<planet_id>", methods=["DELETE"])'
+@planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
 
@@ -107,4 +99,4 @@ def delete_planet(planet_id):
 
     return make_response(f"Planet #{planet.id} successfully deleted")
 
-    
+  
