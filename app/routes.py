@@ -6,6 +6,8 @@ from flask import Blueprint, jsonify, make_response, request
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 # endpoint to create a planet
+
+
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
@@ -13,14 +15,16 @@ def create_planet():
         name=request_body["name"],
         description=request_body["description"],
         type=request_body["type"]
-        )
-    
+    )
+
     db.session.add(new_planet)
     db.session.commit()
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 # endpoint to request a list of planets and their information
+
+
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
     planets_response = []
@@ -35,9 +39,20 @@ def get_all_planets():
                 "type": planet.type
             }
         )
-    
+
     return jsonify(planets_response)
 
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def handle_planet(planet_id):
+    planet = Planet.query.get(planet_id)
+
+    return {
+        "id": planet.id,
+        "name": planet.name,
+        "description": planet.description,
+        "type": planet.type
+    }
 
 
 # class Planet:
