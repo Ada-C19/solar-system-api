@@ -30,7 +30,7 @@ from app.model.planets_model import Planet
 
 planet_bp = Blueprint("planet", __name__, url_prefix="/planet")
 
-
+#CREATE
 @planet_bp.route("", methods=["POST"])
 def add_planet():
     request_body = request.get_json()
@@ -44,6 +44,8 @@ def add_planet():
 
     return f"id{new_planet.id}", 201
 
+
+#GET ALL 
 @planet_bp.route("", methods=["GET"])
 def get_planets():
     response = []
@@ -52,27 +54,23 @@ def get_planets():
         response.append(planet.to_dict())
     return jsonify(response), 200
 
-
+#GET ONE
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
+
+    planet = validate_planet(id)
+
+    return planet.to_dict(), 200
+
+
+#helper function
+def validate_planet(id):
     try:
         planet_id = int(id)
+
     except ValueError:
-        return {"message": f"id {id} is invalid"}, 400
+        return abort(make_response({"message": f"invalide id {id} not found"}, 400))
     
-    for planet in planet_list:
-        if planet_id == planet.id:
-            return jsonify({"id": planet.id,
-                    "name": planet.name,
-                    "description": planet.description,
-                    "size": planet.size
-                    }), 200
-    return {"message":f"id {planet_id} not found"}, 404
 
-
-def validate_planet(planet_id):
-    try:
-        planet_id = int(planet_id)
-
-    except ValueError:
-        return abort(make_response(f"message: invalide id {planet_id}")), 400
+    return Planet.query.get_or_404(planet_id)
+   
