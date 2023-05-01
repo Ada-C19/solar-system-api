@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort, make_response
 from app import db
 from app.models.planet import Planet
 
@@ -19,7 +19,7 @@ def add_planet():
     return {"id": new_planet.id}, 201
 
 @planet_bp.route("", methods=["GET"])
-def get_restaurants():
+def get_planets():
     response = []
     all_planets = Planet.query.all()
     for planet in all_planets:
@@ -27,18 +27,17 @@ def get_restaurants():
 
     return jsonify(response), 200
 
-# @planet_bp.route("/<id>", methods=["GET"])
-# def get_one_planet(id):
-#     try:
-#         planet_id = int(id)
-#     except:
-#         return {"message": f"invalid id: {id}"}, 400
+@planet_bp.route("/<p_id>", methods=["GET"])
+def get_one_planet(p_id):
+    planet = validate_planet(p_id)
+
+    return planet.to_dict(), 200
+
+
+def validate_planet(p_id):
+    try:
+        planet_id = int(p_id)
+    except ValueError:
+        return abort(make_response({"message": f"invalid id: {p_id}"}, 400))
     
-#     for planet in planet_list:
-#         if planet.id == planet_id:
-#             return jsonify({
-#             "id": planet.id,
-#             "name": planet.name,
-#             "description": planet.description}), 200
-    
-#     return jsonify({"message": f"id {planet_id} not found"}), 404
+    return Planet.query.get_or_404(p_id)
