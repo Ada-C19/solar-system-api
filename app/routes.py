@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort, make_response
 from app import db
 from app.models.planet import Planet
 
@@ -36,20 +36,38 @@ def get_planets():
 
     return jsonify(response), 200
 
-# @planet_bp.route("/<id>", methods=["GET"])
-# def get_one_planet(id):
-#     try: 
-#         planet_id = int(id)
-#     except ValueError:
-#         return {"message": f"Invalid id: {id}"}, 400
-
-#     for planet in planet_list:
-#         if planet.id == planet_id:
-#             return {
-#                 "id": planet.id,
-#                 "name": planet.name,
-#                 "description": planet.description,
-#                 "size": planet.size
-#             }, 200
+@planet_bp.route("/<id>", methods=["GET"])
+def get_one_planet(id):
+    planet = validate_planet(id)
     
-#     return {"message": f"{planet_id} not found"}, 404
+    return planet.to_dict(), 200
+
+def validate_planet(pl_id):
+    try: 
+        planet_id = int(pl_id)
+    except ValueError:
+         return abort(make_response({"msg": f"Invalid id: {pl_id}"}, 400))
+    
+    return Planet.query.get_or_404(planet_id, {"msg":"id not found"})
+
+@planet_bp.route("/<id>", methods=["PUT"])
+def update_planet(id):
+    planet = validate_planet(id)
+
+    request_data = request.get_json()
+
+    planet.name = request_data["name"]
+    planet.description = request_data["description"]
+    planet.size = request_data["size"]
+
+    db.session.commit()
+    return {"msg": f"Planet {id} successfully updated"}, 200
+
+@planet_bp.route("/<id>", methods=["DELETE"])
+def delete_planet(id):
+    planet = validate_planet(id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return {"msg": f"Planet {id} successfully deleted"}, 200
