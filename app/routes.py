@@ -7,6 +7,7 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 
 def validate_planet(planet_id):
+    """Checks if planet_id is valid or exists. If valid, returns planet resource"""
     try:
         planet_id = int(planet_id)
     except:
@@ -25,6 +26,7 @@ def validate_planet(planet_id):
 
 @planets_bp.route("", methods=["POST"])
 def create_planet():
+    """Creates a planet resource and adds data to database"""
     request_body = request.get_json()
     new_planet = Planet(
         name=request_body["name"],
@@ -42,6 +44,7 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
+    """Returns data for all existing planets"""
     planets_response = []
     planets = Planet.query.all()
 
@@ -60,6 +63,7 @@ def get_all_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
+    """Returns one existing planet data"""
     planet = validate_planet(planet_id)
 
     return {
@@ -72,7 +76,7 @@ def read_one_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
-    """Updates one existing planet"""
+    """Updates one existing planet data"""
     planet = validate_planet(planet_id)
 
     request_body = request.get_json()
@@ -85,15 +89,17 @@ def update_planet(planet_id):
 
     return make_response(f"Planet #{planet_id} successfully updated")
 
+
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
+    """Deletes one eexisting planet data"""
     planet = validate_planet(planet_id)
 
     db.session.delete(planet)
     db.session.commit()
 
     return make_response(f"Planet #{planet.id} successfully deleted")
-                  
+
 
 # class Planet:
 #     """Create class Planet"""
