@@ -75,6 +75,28 @@ def get_one_planet(planet_id):
         }), 200
 
 
+@planets_bp.route("/<planet_id>", methods=["PUT"])
+def update_one_planet(planet_id):
+    # Get the data from the request body
+    request_body = request.get_json()
+
+    planet_to_update = validate_planet(planet_id)
+
+    planet_to_update.name = request_body["name"]
+    planet_to_update.description = request_body["description"]
+    planet_to_update.distance_from_sun = request_body["distance from sun"]
+
+    db.session.commit()
+
+    return ({
+            "id": planet_to_update.id,
+            "name": planet_to_update.name,
+            "description": planet_to_update.description,
+            "distance from sun": planet_to_update.distance_from_sun
+        }), 200
+
+
+
 # @planets_bp.route("", methods=['GET'])
 # def handle_planets():
 #     planets_as_dict = [vars(planet) for planet in planet_list]
