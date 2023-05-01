@@ -42,6 +42,28 @@ def get_planet_by_id(planet_id):
             "description": planet.description
         }
 
+@solar_system_planet.route("/<planet_id>", methods=["DELETE"])
+def delete_planet(planet_id):
+    planet = verify_planet_id(planet_id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return make_response({"message": f"Planet {planet.id} has been deleted"}, 200)
+
+@solar_system_planet.route("/<planet_id>", methods=["PUT"])
+def update(planet_id):
+    planet = verify_planet_id(planet_id)
+    request_body = request.get_json()
+
+    planet.name = request_body["name"]
+    planet.radius = request_body["radius"]
+    planet.description = request_body["description"]
+
+    db.session.commit()
+
+    return make_response({"message": f"Planet {planet.id} has been updated"}, 200)
+
 def verify_planet_id(planet_id):
     try: 
         planet_id = int(planet_id)
@@ -61,17 +83,16 @@ def add_moon():
     new_moon = Moon(
         name = request_body["name"],
         radius = request_body["radius"],
-        description = request_body["description"],
         planet_id = request_body["planet_id"]
     )
     
     db.session.add(new_moon)
     db.session.commit()
 
-    return make_response({"message": f"Planet {new_moon.name} has been added, with the id: {new_moon.id}"}, 201)
+    return make_response({"message": f"Moon {new_moon.name} has been added, with the id: {new_moon.id}"}, 201)
 
 @solar_system_moon.route("", methods=["GET"])
-def get_planets():
+def get_moons():
     return_list = []
     all_moons = Moon.query.all()
     for moon in all_moons:
@@ -79,7 +100,7 @@ def get_planets():
             "id": moon.id,
             "name": moon.name,
             "radius": moon.radius,
-            "planet name": moon.planet.name
+            "planet name": moon.planet_id
         })
     return jsonify(return_list), 200
 
@@ -90,8 +111,30 @@ def get_moon_by_id(moon_id):
             "id": moon.id,
             "name": moon.name,
             "radius": moon.radius,
-            "planet name": moon.planet.name
+            "planet name": moon.planet_id
         }
+
+@solar_system_moon.route("/<moon_id>", methods=["DELETE"])
+def delete_planet(moon_id):
+    moon = verify_moon_id(moon_id)
+
+    db.session.delete(moon)
+    db.session.commit()
+
+    return make_response({"message": f"Moon {moon.id} has been deleted"}, 200)
+
+@solar_system_moon.route("/<moon_id>", methods=["PUT"])
+def update(moon_id):
+    moon = verify_moon_id(moon_id)
+    request_body = request.get_json()
+
+    moon.name = request_body["name"]
+    moon.radius = request_body["radius"]
+    moon.planet_id = request_body["planet_id"]
+
+    db.session.commit()
+
+    return make_response({"message": f"Moon {moon.id} has been updated"}, 200)
 
 def verify_moon_id(moon_id):
     try: 
