@@ -54,6 +54,7 @@ def get_planets():
         response.append(planet.to_dict())
     return jsonify(response), 200
 
+
 #GET ONE
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
@@ -61,6 +62,7 @@ def get_one_planet(id):
     planet = validate_planet(id)
 
     return planet.to_dict(), 200
+
 
 # GET UPDATE
 @planet_bp.route("/<id>", methods=["PUT"])
@@ -74,8 +76,21 @@ def update_planet(id):
     planet.size = request_data["size"]
 
     db.session.commit()
-    
+
     return {"message": f"planet {id} has been updated"}, 200
+
+
+# DELETE 
+@planet_bp.route("/<id>", methods=["DELETE"])
+def delete_planet(id):
+    planet = validate_planet(id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return {"message":f"planet {id} deleted"},200
+
+
 
 
 #helper function
