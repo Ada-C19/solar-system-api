@@ -45,7 +45,6 @@ def handle_planet_id(planet_id):
     
 
 @planets.route("/<planet_id>", methods=["GET"])
-
 def returns_one_planet_info(planet_id):
     planet= handle_planet_id(planet_id)
     planet_response= ({
@@ -57,5 +56,15 @@ def returns_one_planet_info(planet_id):
     return (planet_response)
 
 
+@planets.route("/<planet_id>", methods=["PUT"])
+def update_planet(planet_id):
+    planet = handle_planet_id(planet_id)
+    request_body = request.get_json()
 
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.place = request_body["place"]
 
+    db.session.commit()
+
+    return make_response(f"Planet {planet.id} successfully updated")
