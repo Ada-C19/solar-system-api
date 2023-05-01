@@ -41,3 +41,27 @@ def validate_planet(p_id):
         return abort(make_response({"message": f"invalid id: {p_id}"}, 400))
     
     return Planet.query.get_or_404(p_id)
+
+@planet_bp.route("/<p_id>", methods=["PUT"])
+def update_planet(p_id):
+    planet = validate_planet(p_id)
+
+    request_data = request.get_json()
+
+    planet.name = request_data["name"]
+    planet.description = request_data["description"]
+    planet.num_moons = request_data["num_moons"]
+
+    db.session.commit()
+
+    return {"msg": f"planet {p_id} successfully updated"}, 200
+
+@planet_bp.route("/<p_id>", methods=["DELETE"])
+def delete_planet(p_id):
+    planet = validate_planet(p_id)
+
+    db.session.delete(planet)
+
+    db.session.commit()
+
+    return {"msg": f"planet {p_id} successfully deleted"}, 200
