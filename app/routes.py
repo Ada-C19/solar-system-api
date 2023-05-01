@@ -1,6 +1,6 @@
 from app import db
 from app.models.Planet import Planet
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, jsonify, make_response, request, abort 
 
 
 planets = Blueprint("planets", __name__, url_prefix="/planets")
@@ -32,16 +32,30 @@ def return_all_planets():
         })
     return jsonify(planet_response)
 
-
-@planets.route("/<planet_id>", methods=["GET"])
-def returns_one_planet_info(planet_id):
+def handle_planet_id(planet_id):
     try:
         planet_id = int(planet_id)
     except:
-        return {"message":f"planet {planet_id} invalid"}, 400
-    for planet in Planets:
-        if int(planet_id) == planet.id:
-            return vars(planet), 200
-    return {"message":f"planet {planet_id} not found"}, 404
+        abort(make_response({"message":f"planet {planet_id} invalid"}, 400))
+    
+    planet = Planet.query.get(planet_id)
+    if not planet:
+            abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+    return planet
+    
+
+@planets.route("/<planet_id>", methods=["GET"])
+
+def returns_one_planet_info(planet_id):
+    planet= handle_planet_id(planet_id)
+    planet_response= ({
+            "id": planet.id,
+            "name": planet.name,
+            "description":planet.description,
+            'place':planet.place
+        })
+    return (planet_response)
+
+
 
 
