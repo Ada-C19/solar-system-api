@@ -6,4 +6,10 @@ class Planet(db.Model):
     description=db.Column(db.String, nullable=False)
     solar_day=db.Column(db.Float, nullable=False)
 
-    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "solar day": self.solar_day
+        }

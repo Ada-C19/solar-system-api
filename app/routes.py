@@ -15,6 +15,14 @@ def create_planet():
 
     return make_response(f"Planet {new_planet.name} created successfully.", 201)
 
+@planets_bp.route("", methods=["GET"])
+def get_all_planets():
+    planets = Planet.query.all()
+    results = [planet.to_dict() for planet in planets]
+    
+    return jsonify(results)
+
+
 # Define a Planet class with the attributes id, name, 
 # and description, and one additional attribute
 
