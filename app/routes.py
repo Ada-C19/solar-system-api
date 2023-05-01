@@ -59,7 +59,7 @@ def get_all_planets():
 
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
-def handle_planet(planet_id):
+def read_one_planet(planet_id):
     planet = validate_planet(planet_id)
 
     return {
