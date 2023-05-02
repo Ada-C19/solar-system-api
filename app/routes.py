@@ -1,41 +1,48 @@
 from flask import Blueprint, jsonify, abort, make_response, request
-from app.models.cat import Cat
+from app.models.planet import Planet
 from app import db
 
-cats_bp = Blueprint("cats", __name__, url_prefix="/cats")
+planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
-# POST /cats
-@cats_bp.route("", methods=["POST"])
-def create_cat():
+@planets_bp.route("", methods=['POST'])
+def create_planet():
     request_body = request.get_json()
-    new_cat = Cat(
-        name=request_body["name"],
-        color=request_body["color"],
-        personality=request_body["personality"],
+    new_planet = Planet(
+        name = request_body["name"],
+        description = request_body["description"],
+        mass = request_body["mass"],
+        # moons = request_body["moons"],
+        # distance_from_sun = request_body["distance_from_sun"],
+        # surface_area = request_body["surface_area"],
+        # namesake = request_body["namesake"],
+        # visited_by_humans = request_body['visited_by_humans'],
     )
 
-    db.session.add(new_cat)
+    db.session.add(new_planet)
     db.session.commit()
 
-    message = f"Cat {new_cat.name} successfully created"
+    message = f"New planet {new_planet.name} successfully created!"
     return make_response(message, 201)
 
-# GET /cats
-@cats_bp.route("", methods=["GET"])
-def get_all_cats():
-    cats = Cat.query.all()
-    results = []
-    for cat in cats: 
-        results.append(
+@planets_bp.route("", methods=["GET"])
+def get_planets():
+    planets = planets.all()
+    request_body = []
+    for planet in planets:
+        request_body.append(
             dict(
-                id=cat.id, 
-                name=cat.name, 
-                color=cat.color, 
-                personality=cat.personality
+                id=planet.id,
+                name=planet.name,
+                description=planet.description,
+                mass=planet.mass,
+                # moons=planet.moons,
+                # distance_from_sun=planet.distance_from_sun,
+                # surface_area=planet.surface_area,
+                # namesake=planet.namesake,
+                # visited_by_humans=planet.visited_by_humans,
             )
         )
-
-    return jsonify(results)
+    return jsonify(request_body), 200
 
 
 
