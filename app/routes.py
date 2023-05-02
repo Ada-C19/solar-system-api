@@ -36,14 +36,18 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def read_all_planets():
-    planets_response = []
-    
-    planets = Planet.query.all()
+    color_query = request.args.get("color")
 
+    if color_query:
+        planets = Planet.query.filter_by(color=color_query)
+    else:
+        planets = Planet.query.all()
+
+    planets_response = []
     for planet in planets:
         planets_response.append({
             "id": planet.id,
-                "title": planet.name,
+                "name": planet.name,
                 "description": planet.description,
                 "color": planet.color
         })
