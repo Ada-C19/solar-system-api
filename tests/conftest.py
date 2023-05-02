@@ -30,7 +30,8 @@ def client(app):
 def two_saved_planets(app):
     mercury = Planet(name="Mercury",
                      description="The smallest planet; pitted and streaky, brownish-gray",
-                     distance_from_the_sun=0.39),
+                     distance_from_the_sun=0.39)
+
     venus = Planet(name="Venus",
                    description="A fireball with temperatures hot enough to melt lead, covered in thick clouds",
                    distance_from_the_sun=0.72)

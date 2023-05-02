@@ -35,7 +35,7 @@ def validate_planet(planet_id):
     try:
         planet_id = int(planet_id)
     except:
-        abort(make_response({"message": f"Planet with id {planet_id} is invalid"}, 400))    
+        abort(make_response({"message": f"Planet with id {planet_id} is invalid"}, 400))
 
     planet = Planet.query.get(planet_id)
 
