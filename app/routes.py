@@ -38,7 +38,7 @@ def create_planet():
                         description=request_body["description"], form=request_body["form"])
     db.session.add(new_planet)
     db.session.commit()
-    return make_response(f"Planet {new_planet.name} was created successfully", 201)
+    return make_response(jsonify(f"Planet {new_planet.name} was created successfully"), 201)
 
 @planets_bp.route("", methods=['GET'])
 
@@ -74,11 +74,11 @@ def update_planet(planet_id):
     planet.form = request_body["form"]
     
     db.session.commit()
-    return make_response(f"Planet {planet_id} updated succesffuly")
+    return make_response(jsonify(f"Planet {planet_id} updated succesffuly"), 200)
 
 @planets_bp.route("/<planet_id>", methods= ['DELETE'])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
     db.session.delete(planet)
     db.session.commit()
-    return make_response(f"Planet {planet_id} deleted successfully")
+    return make_response(jsonify(f"Planet {planet_id} deleted successfully"))
