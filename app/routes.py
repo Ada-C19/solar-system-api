@@ -48,12 +48,14 @@ def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
                         description=request_body["description"],
-                        association=request_body["association"])
+                        association=request_body["association"],
+                        )
 
     db.session.add(new_planet)
     db.session.commit()
 
     return make_response(f'Planet {new_planet} successfully created.', 201)
+
 
 @bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
