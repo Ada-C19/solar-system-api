@@ -23,10 +23,15 @@ def add_planet():
 def get_planets():
     return_list = []
     name_query = request.args.get("name")
-    if name_query is None:
+    radius_query = request.args.get("radius_min")
+    if not name_query and not radius_query:
         all_planets = Planet.query.all()
-    else:
-        all_planets = Planet.query.filter_by(name=name_query)
+    elif name_query and radius_query:
+        all_planets = Planet.query.filter(Planet.name==name_query, Planet.radius>=radius_query)
+    elif radius_query:
+        all_planets = Planet.query.filter(Planet.radius>=radius_query)
+    elif name_query:
+        all_planets = Planet.query.filter(Planet.name==name_query)
     for planet in all_planets:
         return_list.append({
             "id": planet.id,
@@ -99,10 +104,15 @@ def add_moon():
 def get_moons():
     return_list = []
     name_query = request.args.get("name")
-    if name_query is None:
+    radius_query = request.args.get("radius_min")
+    if not name_query and not radius_query:
         all_moons = Moon.query.all()
-    else:
-        all_moons = Moon.query.filterby(name=name_query)
+    elif name_query and radius_query:
+        all_moons = Moon.query.filter(Moon.name==name_query, Moon.radius>=radius_query)
+    elif radius_query:
+        all_moons = Moon.query.filter(Moon.radius>=radius_query)
+    elif name_query:
+        all_moons = Moon.query.filter(Moon.name==name_query)
     for moon in all_moons:
         return_list.append({
             "id": moon.id,
