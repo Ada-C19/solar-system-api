@@ -48,6 +48,19 @@ def get_one_planet(planet_id):
             "solar day": planet.solar_day
     }
 
+@planets_bp.route("/<planet_id>", methods=["PUT"])
+def replace_planet(planet_id):
+    planet = validate_planet(planet_id)
+    planet_to_update = request.get_json()
+    planet.name = planet_to_update["name"]
+    planet.description = planet_to_update["description"]
+    planet.solar_day = planet_to_update["solar day"]
+
+    db.session.commit()
+
+    return make_response(f"Planet {planet.name} updated successfully.")
+
+
 
 
 
