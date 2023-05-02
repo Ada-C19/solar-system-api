@@ -21,9 +21,6 @@ def validate_planet(planet_id):
     return planet
 
 
-# endpoint to create a planet
-
-
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     """Creates a planet resource and adds data to database"""
@@ -39,14 +36,17 @@ def create_planet():
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
-# endpoint to request a list of planets and their information
-
-
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
     """Returns data for all existing planets"""
+    name_query = request.args.get("name")
+    if name_query:
+        planets = Planet.query.filter_by(name=name_query)
+    else:
+        planets = Planet.query.all()
+
     planets_response = []
-    planets = Planet.query.all()
+    # planets = Planet.query.all()
 
     for planet in planets:
         planets_response.append(
