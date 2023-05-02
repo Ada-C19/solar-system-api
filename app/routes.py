@@ -4,6 +4,22 @@ from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
+
+# helper function 
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"Planet {planet_id} was invalid"}, 400))
+
+    planet = Planet.query.get(planet_id)
+    
+    if not planet:
+        abort(make_response({"message":f"Planet with id {planet_id} was not found"}, 404))
+        
+    return planet
+
+# retrieves all planets
 @planets_bp.route("", methods = ["GET"])
 def handle_planets():
     request.method == "GET"
@@ -15,6 +31,7 @@ def handle_planets():
     
     return jsonify(planets_response), 200
 
+# makes a new planet
 @planets_bp.route("", methods = ["POST"])
 def create_planet():
     request.method == "POST"
@@ -33,6 +50,38 @@ def create_planet():
     db.session.commit()
 
     return make_response(f"Planet {new_planet.name} sucessfully created", 201)
+
+# retrieves one planet by planet_id 
+@planets_bp.route("/<planet_id>", methods = ["GET"])
+def handle_planet(planet_id):
+    planet = validate_planet(planet_id)
+    
+    return jsonify(planet.make_planet_dict()), 200
+
+# updates one existing planet by planet_id
+@planets_bp.route("/<planet_id>", methods = ["PUT"])
+def update_planet(planet_id):
+    planet = validate_planet(planet_id)
+    
+    request_body = request.get_json()
+    
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.color = request_body["color"]
+    
+    db.session.commit()
+    
+    return make_response(f"Planet #{planet_id} sucessfully updated"), 200
+
+# deletes one planet by planet_id
+@planets_bp.route("/<planet_id>", methods = ["DELETE"])
+def delete_planet(planet_id):
+    planet = validate_planet(planet_id)
+    
+    db.session.delete(planet)
+    db.session.commit()
+    
+    return make_response(f"Planet #{planet_id} successfully deleted"), 200
 
 # class Planet:
 #     def __init__(self, id, name, description, color):
