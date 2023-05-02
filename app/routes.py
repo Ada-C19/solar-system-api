@@ -30,7 +30,13 @@ def add_planet():
 @planet_bp.route("", methods= ['GET'])
 def get_planets():
     response = []
-    all_planets = Planet.query.all()
+    name_query = request.args.get("name")
+
+    if name_query is None:
+        all_planets = Planet.query.all()
+    else:
+        all_planets = Planet.query.filter_by(name=name_query)
+
     for planet in all_planets: 
         response.append(planet.to_dict())
 
@@ -46,7 +52,7 @@ def validate_planet(pl_id):
     try: 
         planet_id = int(pl_id)
     except ValueError:
-         return abort(make_response({"msg": f"Invalid id: {pl_id}"}, 400))
+        return abort(make_response({"msg": f"Invalid id: {pl_id}"}, 400))
     
     return Planet.query.get_or_404(planet_id, {"msg":"id not found"})
 
