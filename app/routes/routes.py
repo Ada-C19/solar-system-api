@@ -22,7 +22,11 @@ def add_planet():
 @solar_system_planet.route("", methods=["GET"])
 def get_planets():
     return_list = []
-    all_planets = Planet.query.all()
+    name_query = request.args.get("name")
+    if name_query is None:
+        all_planets = Planet.query.all()
+    else:
+        all_planets = Planet.query.filter_by(name=name_query)
     for planet in all_planets:
         return_list.append({
             "id": planet.id,
@@ -94,7 +98,11 @@ def add_moon():
 @solar_system_moon.route("", methods=["GET"])
 def get_moons():
     return_list = []
-    all_moons = Moon.query.all()
+    name_query = request.args.get("name")
+    if name_query is None:
+        all_moons = Moon.query.all()
+    else:
+        all_moons = Moon.query.filterby(name=name_query)
     for moon in all_moons:
         return_list.append({
             "id": moon.id,
