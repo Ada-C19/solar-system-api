@@ -1,6 +1,6 @@
 from app import db
 from app.models.planet import Planet
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, jsonify, make_response, request, abort
 
 # planets = [
 #     Planet(1, "Mercury", "smallest planet", "Wednesday"),
@@ -12,22 +12,24 @@ from flask import Blueprint, jsonify, make_response, request
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-# def validate_planet(id):
-#     try:
-#         id = int(id)
-#     except ValueError:
-#         abort(make_response({'message': f'Planet {id} is invalid.'}, 400))
+def validate_planet(id):
+    try:
+        id = int(id)
+    except ValueError:
+        abort(make_response({'message': f'Planet {id} is invalid.'}, 400))
 
-#     for planet in planets:
-#         if planet.id == id:
-#              return planet
-#     abort(make_response({'message': f'Planet {id} not found.'}, 404))
+    planet = Planet.query.get(id)
 
-# @planets_bp.route("/<id>", methods=["GET"])
-# def handle_planet(id):
-#     planet = validate_planet(id)
+    if not planet:
+        abort(make_response({'message': f'Planet {id} not found.'}, 404))
+        
+    return planet
 
-#     return planet.make_planet_dict()
+@planets_bp.route("/<id>", methods=["GET"])
+def handle_planet(id):
+    planet = validate_planet(id)
+
+    return planet.make_planet_dict()
 
 
 @planets_bp.route("", methods=["GET"])
