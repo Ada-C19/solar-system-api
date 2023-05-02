@@ -21,5 +21,11 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
-    
+
+@pytest.fixture
+def saved_planets(app):
+    planet_mercury = Planet(name = "Mercury", description = "rocky planet", form = "solid" )
+    planet_venus = Planet(name = "Venus", description = "gassy planet", form = "gas" )
+    db.session.add_all([planet_mercury, planet_venus])
+    db.session.commit()
     
