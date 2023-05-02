@@ -20,9 +20,13 @@ def handle_planet():
 @planets.route("", methods=["GET"])
 def return_all_planets():
 
-    planets= Planet.query.all()
-    planet_response = []
+    name_query = request.args.get("name")
+    if name_query:
+        planets = Planet.query.filter_by(name=name_query)
+    else:
+        planets = Planet.query.all()
 
+    planet_response = []
     for planet in planets:
         planet_response.append({
             "id": planet.id,
