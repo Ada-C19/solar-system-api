@@ -14,3 +14,9 @@ class Planet(db.Model):
             "description": self.description,
             "distance_from_the_sun": self.distance_from_the_sun
         }
+     
+    @classmethod
+    def from_dict(cls, planet_data):
+        return Planet(name=planet_data["name"],
+                      description=planet_data["description"],
+                      distance_from_the_sun=planet_data["distance_from_the_sun"])
