@@ -1,6 +1,5 @@
 
 from app import db
-
 class Planet(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
@@ -14,7 +13,6 @@ class Planet(db.Model):
             "description": self.description,
             "distance_from_the_sun": self.distance_from_the_sun
         }
-     
     @classmethod
     def from_dict(cls, planet_data):
         return Planet(name=planet_data["name"],

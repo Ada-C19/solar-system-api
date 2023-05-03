@@ -2,7 +2,6 @@ from app import db
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, make_response, request, abort
 
-
 planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
 
 # helper functions
@@ -23,7 +22,7 @@ def validate_model(cls, model_id):
 @planets_bp.route("", methods=["GET"])
 def read_all_planets():
     name_query = request.args.get("name")
-  
+
     if name_query:
         planets = Planet.query.filter_by(name=name_query)
     else:
@@ -42,7 +41,7 @@ def create_planet():
     db.session.commit()
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
- 
+
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
     planet = validate_model(Planet, planet_id)
