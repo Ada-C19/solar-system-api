@@ -45,6 +45,9 @@ def get_planets():
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
     planet = validate_planet(id)
+
+    if planet is None: 
+        return {"msg": f"id {id} not found"}, 404
     
     return planet.to_dict(), 200
 
