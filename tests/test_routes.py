@@ -31,12 +31,8 @@ def test_get_one_planet_invalid_id_400(client):
     assert response.status_code == 400
     assert response_body["message"] == "planet WALLA-WALLA invalid"
 
-def test_post_one_planet(client):
-    response = client.post("/planets", json={
-        "name": "Walla-Walla",
-        "description": "A bad place.",
-        "solar day": 0.5
-    })
+def test_post_one_planet(client, walla_walla):
+    response = client.post("/planets", json=walla_walla)
 
     response_body = response.get_json()
 
@@ -50,12 +46,8 @@ def test_delete_one_planet(client, two_planets):
     assert response.status_code == 200
     assert response_body == "Planet Nebula was deleted."
 
-def test_update_one_planet(client, two_planets):
-    response = client.put("/planets/1", json={
-        "name": "Walla-Walla",
-        "description": "A bad place.",
-        "solar day": 0.5
-        })
+def test_update_one_planet(client, two_planets, walla_walla):
+    response = client.put("/planets/1", json=walla_walla)
     response_body = response.get_json()
 
     assert response.status_code == 200

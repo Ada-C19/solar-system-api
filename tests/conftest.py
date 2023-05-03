@@ -42,4 +42,10 @@ def two_planets(app):
     db.session.add_all([nebula, gamora])
     db.session.commit()
 
-    
+@pytest.fixture
+def walla_walla():
+    return {
+        "name": "Walla-Walla",
+        "description": "A bad place.",
+        "solar day": 0.5
+        }
