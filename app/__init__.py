@@ -15,17 +15,18 @@ load_dotenv()
 def create_app(testing=None):
     app = Flask(__name__)
 
+ # CHANGES
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     if testing is None:
 
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
             "SQLALCHEMY_DATABASE_URI")
-        
+
     else:
-        app.config["SQLALCHEMY_TEST_DATABASE_TEST"] = os.environ.get(
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
             "SQLALCHEMY_TEST_DATABASE_TEST")
-        
     
     # app.config["DEBUG"] = True
 
