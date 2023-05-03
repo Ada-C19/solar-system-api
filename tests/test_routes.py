@@ -31,4 +31,23 @@ def test_get_one_animal_empty_db_returns_404(client):
     assert response.status_code == 404
 
 
-    
+def test_get_all_planets_returns_200(client, two_planets):
+    # ACT
+    response = client.get('/planets')
+    response_body = response.get_json()
+
+    # ASSERT
+    assert response.status_code == 200
+    assert response_body == [
+        {   
+            "id": 1,
+            "name": "Furby",
+            "description": "Purple",
+            "distance from sun": 17
+        },
+        {   
+            "id": 2, 
+            "name": "Squiggles", 
+            "description": "Orange", 
+            "distance from sun": 29
+        }]
