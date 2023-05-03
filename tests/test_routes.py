@@ -21,3 +21,18 @@ def test_get_one_planet(client, two_saved_planets):
         "description": "Smallest planet in the solar system. Its year is 88 days long. Closest to the Sun",
         "type": "Rocky/Terrestrial"
     }
+
+
+def test_create_one_planet(client):
+    # Act
+    response = client.post("/planets", json={
+        "name": "New Planet",
+        "description": "The Best Planet!",
+        "type": "Various types"
+    })
+
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 201
+    assert response_body == "Planet New Planet successfully created"
