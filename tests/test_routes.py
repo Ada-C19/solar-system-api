@@ -11,7 +11,7 @@ def test_get_all_planets_with_empty_db_returns_empty_list(client):
 
 
 
-# GET /planets/1 returns a response body that matches our fixture
+
 def test_get_one_planet_returns_correct_pkanet(client, two_planets):
     # ACT
     response = client.get('/planets/1')
@@ -26,3 +26,9 @@ def test_get_one_planet_returns_correct_pkanet(client, two_planets):
             "distance from sun": 17
     }
 
+def test_get_one_animal_empty_db_returns_404(client):
+    response = client.get("/planets/1")
+    assert response.status_code == 404
+
+
+    
