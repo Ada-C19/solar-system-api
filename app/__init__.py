@@ -21,9 +21,6 @@ def create_app(testing=None):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    db.init_app(app)
-    migrate.init_app(app, db)
-
 
     from app.models.planet import Planet
     from flask import Blueprint
