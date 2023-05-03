@@ -104,7 +104,7 @@ def delete_planet(id):
     db.session.delete(planet)
     db.session.commit()
 
-    return {"message":f"planet {id} deleted"},200
+    return {"message":f"planet {id} has been deleted"},200
 
 
 

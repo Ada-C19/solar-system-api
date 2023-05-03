@@ -56,5 +56,25 @@ def test_create_one_planet(client):
 
     assert "id" in response_body
     
+ # delete
+def test_delete_planet(client, two_planets):
+    response = client.delete("/planet/1")
 
- 
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert "planet 1 has been deleted" in response_body["message"]
+
+
+#PUT TEST
+def test_put_planet(client, two_planets):
+    response = client.put("/planet/1", json={
+        "name": "sample",
+        "description": "updating planet",
+        "size": 231
+    })
+
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert "planet 1 has been updated" in response_body["message"]
