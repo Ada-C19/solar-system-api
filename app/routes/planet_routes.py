@@ -5,6 +5,11 @@ from flask import Blueprint, jsonify, make_response, request, abort
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
+
+# @planets_bp.route("", methods=["GET", "POST"])
+# def handle_planetssss():
+#     return make_response("I'm a teapot!", 418)
+
 @planets_bp.route("", methods=["POST"])
 def add_new_planet():
     request_body = request.get_json()
