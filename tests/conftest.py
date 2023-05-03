@@ -5,7 +5,7 @@ from app.model.planets_model import Planet
 
 @pytest.fixture
 def app():
-    app = create_app(testing= True)
+    app = create_app(True)
     @request_finished.connect_via(app)
 
     def expire_session(sender, response, **extra):
