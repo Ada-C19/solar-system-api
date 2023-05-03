@@ -34,7 +34,7 @@ def test_get_one_planet_invalid_id_400(client):
 def test_post_one_planet(client):
     response = client.post("/planets", json={
         "name": "Walla-Walla",
-        "description": "All Black.",
+        "description": "A bad place.",
         "solar day": 0.5
     })
 
@@ -53,7 +53,7 @@ def test_delete_one_planet(client, two_planets):
 def test_update_one_planet(client, two_planets):
     response = client.put("/planets/1", json={
         "name": "Walla-Walla",
-        "description": "All Black.",
+        "description": "A bad place.",
         "solar day": 0.5
         })
     response_body = response.get_json()
