@@ -24,6 +24,14 @@ def test_get_one_planet(client, two_saved_planets):
         "association": "Wednesday"
     }
 
+def test_get_one_planet_by_name(client, two_saved_planets):
+    # Act
+    response = client.get("/planets?name=Mercury")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body[0]['name'] == "Mercury"
 
 def test_create_one_planet(client):
     # Arrange
