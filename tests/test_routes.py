@@ -51,3 +51,20 @@ def test_get_all_planets_returns_200(client, two_planets):
             "description": "Orange", 
             "distance from sun": 29
         }]
+    
+def test_post_one_planet_creates_planet_in_db(client):
+    response = client.post("/planets", json={
+            "name": "Earth", 
+            "description": "Blue", 
+            "distance from sun": 2
+        }
+    )
+    print ("testing")
+    response_body = response.get_json()
+    print(response_body)
+    assert response.status_code == 201
+    
+    # print(response_body["name"])
+    # assert response_body["id"] == 
+    # assert response_body["name"] == "Earth"
+    # assert "msg" in response_body

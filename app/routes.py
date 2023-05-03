@@ -47,7 +47,15 @@ def create_planet():
     db.session.add(new_planet)
     db.session.commit()
 
-    return make_response(f"Planet {new_planet.name} successfully created", 201)
+    return ({
+            "id": new_planet.id,
+            "name": new_planet.name,
+            "description": new_planet.description,
+            "distance from sun": new_planet.distance_from_sun,
+            "msg": "Successfully created"
+        }, 201)
+
+    # return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 @planets_bp.route("", methods=['GET'])
 def get_planets():
