@@ -1,4 +1,8 @@
 import pytest
+from werkzeug.exceptions import HTTPException
+from app.routes import validate_model
+from app.models.planet import Planet
+
 def test_get_all_planets_with_no_records(client):
     response = client.get("/planets")
     response_body = response.get_json()
@@ -70,7 +74,7 @@ def test_get_one_planet_missing_record(client, two_saved_planets):
     response_body = response.get_json()
 
     assert response.status_code == 404
-    assert response_body == {"message": "Planet with id 100 was not found"}
+    assert response_body == {"message": "Planet 100 not found"}
 
 
 def test_get_one_planet_invalid_id(client, two_saved_planets):
@@ -78,7 +82,7 @@ def test_get_one_planet_invalid_id(client, two_saved_planets):
     response_body = response.get_json()
 
     assert response.status_code == 400
-    assert response_body == {"message": "Planet with id faraway is invalid"}
+    assert response_body == {"message": "Planet faraway invalid"}
 
 
 def test_create_one_planet(client):
@@ -181,7 +185,7 @@ def test_update_planet_missing_record(client, two_saved_planets):
     response_body = response.get_json()
 
     assert response.status_code == 404
-    assert response_body == {"message": "Planet with id 300 was not found"}
+    assert response_body == {"message": "Planet 300 not found"}
 
 
 def test_update_planet_invalid_id(client, two_saved_planets):
@@ -195,7 +199,7 @@ def test_update_planet_invalid_id(client, two_saved_planets):
     response_body = response.get_json()
 
     assert response.status_code == 400
-    assert response_body == {"message": "Planet with id nearest is invalid"}
+    assert response_body == {"message": "Planet nearest invalid"}
 
 
 def test_delete_one_planet(client, two_saved_planets):
@@ -211,7 +215,7 @@ def test_delete_missing_planet(client, two_saved_planets):
     response_body = response.get_json()
 
     assert response.status_code == 404
-    assert response_body == {"message": "Planet with id 300 was not found"}
+    assert response_body == {"message": "Planet 300 not found"}
 
 
 def test_delete_planet_invalid_id(client, two_saved_planets):
@@ -219,6 +223,25 @@ def test_delete_planet_invalid_id(client, two_saved_planets):
     response_body = response.get_json()
 
     assert response.status_code == 400
-    assert response_body == {"message": "Planet with id nearest is invalid"}
+    assert response_body == {"message": "Planet nearest invalid"}
+
+
+def test_validate_model(two_saved_planets):
+    result_planet = validate_model(Planet, 1)
+
+    assert result_planet.id == 1
+    assert result_planet.name == "Mercury"
+    assert result_planet.description == "The smallest planet; pitted and streaky, brownish-gray"
+    assert result_planet.distance_from_the_sun == 0.39
+
+
+def test_validate_model_missing_record(two_saved_planets):
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "300")
+
+
+def test_validate_model_invalid_id(two_saved_planets):
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "cat")
 
 
