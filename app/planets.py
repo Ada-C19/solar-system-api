@@ -42,7 +42,17 @@ def add_planet():
     db.session.add(new_planet)
     db.session.commit()
 
-    return f"id{new_planet.id}", 201
+    planet_dict = {
+        "id": new_planet.id,
+        "name": new_planet.name,
+        "description": new_planet.description,
+        "size": new_planet.size
+    }
+
+ 
+    return jsonify(planet_dict), 201
+
+
 
 
 #GET ALL 

@@ -40,3 +40,21 @@ def test_get_all_planets(client, two_planets):
     assert response_body == [{"id":1, "name":"Venus","description":"this is Venus","size":6666},
                              {"id":2, "name":"Mars","description":"this is Mars","size":9999}
                              ]
+    
+def test_create_one_planet(client):
+    #act
+    response = client.post("/planet", json={
+        "name":"earth",
+        "description":"this is earth",
+        "size": 10000
+    })
+
+    response_body = response.get_json()
+
+    #assert
+    assert response.status_code == 201
+
+    assert "id" in response_body
+    
+
+ 
