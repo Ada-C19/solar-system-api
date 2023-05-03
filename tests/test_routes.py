@@ -31,7 +31,17 @@ def test_invalid_planet_route(client, two_saved_planets):
 def test_get_all_planets(client, two_saved_planets):
     response = client.get("/planets")
     response_body = response.get_json()
+    print(response_body)
 
     assert response.status_code == 200
-    assert response_body == {{"name": "pluto", "description": "not a planet", "moons": 79, "id": 1}, 
-                            {"name": "mercury", "description": "is a planet", "moons" : 5, "id": 2}}
+    assert response_body == [{"name": "pluto", "description": "not a planet", "moons": 79, "id": 1}, 
+                            {"name": "mercury", "description": "is a planet", "moons" : 5, "id": 2}]
+
+def test_post_one_planet(client):
+    response =client.post ("/planets", json= {"name": "New Planet",
+                                            "description": "it's a new planet",
+                                            "moons": 0})
+    response_body = response.get_data(as_text=True) 
+    assert response.status_code == 201
+    assert response_body == "Planet New Planet successfully created"
+

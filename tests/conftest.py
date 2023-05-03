@@ -27,7 +27,7 @@ def client(app):
 @pytest.fixture
 def two_saved_planets(app):
     pluto = Planet(name= "pluto", description= "not a planet", moons= 79)
-    mercury = Planet(name="mercury", description=" is a planet", moons =5)
+    mercury = Planet(name="mercury", description= "is a planet", moons =5)
 
     db.session.add_all([pluto, mercury])
     db.session.commit()
