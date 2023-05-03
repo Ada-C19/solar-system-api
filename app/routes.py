@@ -46,28 +46,46 @@ def handle_planets():
         return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 
-# def validate_planet(planet_id):
-#     try:
-#         planet_id = int(planet_id)
-#     except:
-#         abort(make_response({"message":f"planet {planet_id} invalid"}, 400))
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message":f"planet {planet_id} invalid"}, 400))
     
-#     for planet in planets:
-#         if planet_id == planet.id:
-#             return planet
-    
-#     abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+    planet = Planet.query.get(planet_id)
+
+    if not planet:
+        abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+
+    return planet
 
 
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def handle_planet(planet_id):
-#     planet = validate_planet(planet_id)
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
+def handle_one_planet(planet_id):
+    planet = validate_planet(planet_id)
     
-#     return {
-#         "id": planet.id,
-#         "name": planet.name,
-#         "description": planet.description,
-    # }
+    if request.method == "GET":
+        return {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+        }
+
+    elif request.method == "PUT":
+        request_body = request.get_json()
+
+        planet.name = request_body["name"]
+        planet.description = request_body["description"]
+
+        db.session.commit()
+
+        return make_response(f"Planet #{planet.id} successfully updated")
+
+    elif request.method == "DELETE":
+        db.session.delete(planet)
+        db.session.commit()
+
+        return make_response(f"Planet #{planet.id} successfully deleted")
 
 # @planets_bp.route("", methods=["POST"])
 # def create_planet():
