@@ -73,12 +73,7 @@ def create_planet():
 def read_one_planet(planet_id):
     planet = validate_planet(planet_id)
 
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "distance_from_the_sun": planet.distance_from_the_sun,
-    }
+    return planet.to_dict()
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
