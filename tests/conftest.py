@@ -30,3 +30,17 @@ def app():
 @pytest.fixture 
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def two_planets(app):
+    planet_one = Planet(id=1, name="Furby", description="Purple", distance_from_sun=17)
+    planet_two = Planet(id=2, name="Squiggles", description="Orange", distance_from_sun=29)
+
+    db.session.add(planet_one)
+    db.session.add(planet_two)
+
+
+    db.session.commit()
+
+
+    # we are working on writing tests portion of wave 6 of project. We need to create fixtures and unit tests
