@@ -42,8 +42,12 @@ def create_planet():
 @planets_bp.route("", methods=['GET'])
 
 def read_all_planets():
+    name_query = request.args.get("name")
+    if name_query:
+        planets = Planet.query.filter_by(name=name_query)
+    else:
+        planets = Planet.query.all()
     planet_records= []
-    planets=Planet.query.all()
     for planet in planets:
         planet_records.append(
             planet.to_dict())
