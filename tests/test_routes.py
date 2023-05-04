@@ -14,7 +14,7 @@ def test_get_one_planet(client, two_planets):
         "id": 1,
         "name": "Nebula",
         "description": "Fake planet for testing purposes",
-        "solar day": 420.0
+        "solar_day": 420.0
     }
 
 def test_get_one_planet_no_data_404(client):

@@ -47,5 +47,5 @@ def walla_walla():
     return {
         "name": "Walla-Walla",
         "description": "A bad place.",
-        "solar day": 0.5
+        "solar_day": 0.5
         }
