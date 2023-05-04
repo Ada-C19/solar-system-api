@@ -27,9 +27,8 @@ def client(app):
 
 @pytest.fixture
 def two_saved_planets(app):
-#Arrange 
+    
     venus_planet = Planet(id=1,name="Venus",description="hot enough to melt lead n ur heart </3", color="she lil' rusty :(")
-
     saturn_planet = Planet(id=2,name="Saturn",description="bling bling rings",
 color="she cute pink :(")
 
