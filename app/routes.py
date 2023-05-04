@@ -19,7 +19,6 @@ def read_all_planets():
     name_query = request.args.get("name")
     description_query = request.args.get("description")
     diameter_query = request.args.get("diameter")
-
     planet_query = Planet.query
 
     if name_query:
