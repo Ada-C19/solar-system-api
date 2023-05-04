@@ -3,14 +3,6 @@ from app.models.planet import Planet
 from flask import Blueprint, jsonify, make_response, request, abort
 from .routes_helpers import validate_model
 
-# planets = [
-#     Planet(1, "Mercury", "smallest planet", "Wednesday"),
-#     Planet(2, "Mars", "spicy, red one", "Tuesday"),
-#     Planet(3, "Jupiter", "biggest planet", "Thursday"),
-#     Planet(4, "Venus", "hottest planet", "Friday"),
-#     Planet(5, "Saturn", "the one with the rings", "Saturday")
-# ]
-
 bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 
