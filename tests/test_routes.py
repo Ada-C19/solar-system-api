@@ -22,14 +22,14 @@ def test_get_one_planet_no_data_404(client):
     response_body = response.get_json()
 
     assert response.status_code == 404
-    assert response_body["message"] == "planet 1 not found"
+    assert response_body["message"] == "Planet 1 not found"
 
 def test_get_one_planet_invalid_id_400(client):
     response = client.get("/planets/WALLA-WALLA")
     response_body = response.get_json()
 
     assert response.status_code == 400
-    assert response_body["message"] == "planet WALLA-WALLA invalid"
+    assert response_body["message"] == "Planet WALLA-WALLA invalid"
 
 def test_post_one_planet(client, walla_walla):
     response = client.post("/planets", json=walla_walla)
