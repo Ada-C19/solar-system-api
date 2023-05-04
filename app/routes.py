@@ -7,7 +7,6 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 
 def validate_planet(planet_id):
-    """Checks if planet_id is valid or exists. If valid, returns planet resource"""
     try:
         planet_id = int(planet_id)
     except:
@@ -23,7 +22,6 @@ def validate_planet(planet_id):
 
 @planets_bp.route("", methods=["POST"])
 def create_planet():
-    """Creates a planet resource and adds data to database"""
     request_body = request.get_json()
     new_planet = Planet(
         name=request_body["name"],
@@ -39,7 +37,6 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
-    """Returns data for all existing planets"""
     name_query = request.args.get("name")
     if name_query:
         planets = Planet.query.filter_by(name=name_query)
@@ -50,29 +47,27 @@ def get_all_planets():
     # planets = Planet.query.all()
 
     for planet in planets:
-        planets_response.append(
-            {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "type": planet.type
-            }
-        )
+        planets_response.append(planet.to_dict())
+            # {
+            #     "id": planet.id,
+            #     "name": planet.name,
+            #     "description": planet.description,
+            #     "type": planet.type
+            # }
 
     return jsonify(planets_response)
 
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
-    """Returns one existing planet data"""
     planet = validate_planet(planet_id)
-
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "type": planet.type
-    }
+    return planet.to_dict()
+    # return {
+    #     "id": planet.id,
+    #     "name": planet.name,
+    #     "description": planet.description,
+    #     "type": planet.type
+    # }
 
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
