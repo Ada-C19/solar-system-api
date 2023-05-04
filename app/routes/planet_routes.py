@@ -22,7 +22,19 @@ def add_new_planet():
 
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
+
+    name_param = request.args.get("name")
+    
+    if name_param:
+        planets = Planet.query.filter_by(name=name_param)
+        
+    # else:
+    #     make_response(f"Planet not found", 404)
+        
+
     planets = Planet.query.all()
+
+
     planets_list=[planet.make_planet_dict()for planet in planets]
 
     return jsonify(planets_list), 200
