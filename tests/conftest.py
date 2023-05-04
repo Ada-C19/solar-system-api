@@ -36,4 +36,3 @@ color="she cute pink :(")
     db.session.add(venus_planet)
     db.session.add(saturn_planet)
     db.session.commit()
-
