@@ -15,6 +15,13 @@ class Planet(db.Model):
         planet_as_dict["type"] = self.type
 
         return planet_as_dict
+    
+    @classmethod
+    def from_dict(cls, planet_data):
+        new_planet = Planet(name=planet_data["name"],
+                            description=planet_data["description"],
+                            type=planet_data["type"])
+        return new_planet
 
     # def make_planet_dict(self):
     #     return dict(

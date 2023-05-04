@@ -23,11 +23,12 @@ def validate_planet(planet_id):
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(
-        name=request_body["name"],
-        description=request_body["description"],
-        type=request_body["type"]
-    )
+    new_planet = Planet.from_dict(request_body)
+    # new_planet = Planet(
+    #     name=request_body["name"],
+    #     description=request_body["description"],
+    #     type=request_body["type"]
+    # )
 
     db.session.add(new_planet)
     db.session.commit()
