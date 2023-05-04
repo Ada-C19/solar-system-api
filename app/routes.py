@@ -1,6 +1,7 @@
 from app import db
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, make_response, request, abort
+from .routes_helpers import validate_model
 
 # planets = [
 #     Planet(1, "Mercury", "smallest planet", "Wednesday"),
@@ -13,25 +14,11 @@ from flask import Blueprint, jsonify, make_response, request, abort
 bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 
-def validate_planet(id):
-    try:
-        id = int(id)
-    except ValueError:
-        abort(make_response({'message': f'Planet {id} is invalid.'}, 400))
-
-    planet = Planet.query.get(id)
-
-    if not planet:
-        abort(make_response({'message': f'Planet {id} not found.'}, 404))
-
-    return planet
-
-
 @bp.route("/<id>", methods=["GET"])
 def read_one_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
 
-    return planet.make_dict()
+    return planet.to_dict()
 
 
 @bp.route("", methods=["GET"])
@@ -43,7 +30,7 @@ def read_all_planets():
     else:
         planets = Planet.query.all()
 
-    planets_response = [Planet.make_dict(planet) for planet in planets]
+    planets_response = [Planet.to_dict(planet) for planet in planets]
 
     return jsonify(planets_response)
 
@@ -51,10 +38,7 @@ def read_all_planets():
 @bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(name=request_body["name"],
-                        description=request_body["description"],
-                        association=request_body["association"],
-                        )
+    new_planet = Planet.from_dict(request_body)
 
     db.session.add(new_planet)
     db.session.commit()
@@ -64,12 +48,10 @@ def create_planet():
 
 @bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
     request_body = request.get_json()
 
-    planet.name = request_body["name"]
-    planet.description = request_body["description"]
-    planet.association = request_body["association"]
+    Planet.from_dict(request_body)
 
     db.session.commit()
 
@@ -78,7 +60,7 @@ def update_planet(id):
 
 @bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
 
     db.session.delete(planet)
     db.session.commit()

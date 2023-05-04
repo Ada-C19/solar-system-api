@@ -7,10 +7,18 @@ class Planet(db.Model):
     description = db.Column(db.String)
     association = db.Column(db.String)
 
-    def make_dict(self):
+    def to_dict(self):
         return dict(
             id=self.id,
             name=self.name,
             description=self.description,
             association=self.association,
             )
+    
+    @classmethod
+    def from_dict(cls, planet_data):
+        new_planet = Planet(name=planet_data["name"],
+                            description=planet_data["description"],
+                            association=planet_data["association"],
+                            )
+        return new_planet
