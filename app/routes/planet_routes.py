@@ -1,22 +1,19 @@
 from app import db
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, make_response, request, abort
+from .routes_helpers import validate_model
+
 
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 
-# @planets_bp.route("", methods=["GET", "POST"])
-# def handle_planetssss():
-#     return make_response("I'm a teapot!", 418)
-
 @planets_bp.route("", methods=["POST"])
 def add_new_planet():
     request_body = request.get_json()
-    new_planet = Planet(name=request_body['name'],
-                        description=request_body['description'],
-                        moons=request_body['moons']
-                        )
+
+    new_planet = Planet.dict_to_model(request_body)
+
 
     db.session.add(new_planet)
     db.session.commit()
@@ -26,22 +23,21 @@ def add_new_planet():
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
     planets = Planet.query.all()
-    planets_list=[]
-    for planet in planets:
-        planets_list.append(planet.make_planet_dict())
+    planets_list=[planet.make_planet_dict()for planet in planets]
+
     return jsonify(planets_list), 200
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_one_planet(planet_id):
 
-    planet= validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
 
-    return planet.make_planet_dict()
+    return planet.make_planet_dict(), 200
 
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
 
     db.session.delete(planet)
     db.session.commit()
@@ -50,7 +46,7 @@ def delete_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
-    planet=validate_planet(planet_id)
+    planet=validate_model(Planet, planet_id)
     request_body=request.get_json()
 
     if request_body.get("name") is None or request_body.get("description") is None or request_body.get("moons") is None:
@@ -64,14 +60,3 @@ def update_planet(planet_id):
 
     return make_response(f"planet {planet.name} succesfully updated",200)
 
-def validate_planet(id):
-    try:
-        id = int(id)
-    except:
-        abort(make_response({"message":f"planet {id} invalid"}, 400))
-    
-    planet = Planet.query.get(id)
-    
-    if not planet:
-        abort(make_response({"message":f"planet {id} not found"}, 404))
-    return planet
