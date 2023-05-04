@@ -6,16 +6,16 @@ from flask import Blueprint, jsonify, make_response, request, abort
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 
-def validate_planet(planet_id):
+def validate_model(cls, model_id):
     try:
-        planet_id = int(planet_id)
+        model_id = int(model_id)
     except:
-        abort(make_response({"message": f"planet {planet_id} invalid"}, 400))
+        abort(make_response({"message": f"{cls.__name__} {model_id} invalid"}, 400))
 
-    planet = Planet.query.get(planet_id)
+    planet = cls.query.get(model_id)
 
     if not planet:
-        abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+        abort(make_response({"message": f"{cls.__name__} {model_id} not found"}, 404))
 
     return planet
 
@@ -61,7 +61,7 @@ def get_all_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     return planet.to_dict()
     # return {
     #     "id": planet.id,
@@ -74,7 +74,7 @@ def read_one_planet(planet_id):
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
     """Updates one existing planet data"""
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
 
     request_body = request.get_json()
 
@@ -90,7 +90,7 @@ def update_planet(planet_id):
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     """Deletes one eexisting planet data"""
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
 
     db.session.delete(planet)
     db.session.commit()
@@ -141,7 +141,7 @@ def delete_planet(planet_id):
 
 
 # @planets_bp.route("/<planet_id>", methods=["GET"])
-# def validate_planet(planet_id):
+# def validate_model(planet_id):
 #     """Helper function that handles invalid planet_id"""
 #     try:
 #         planet_id = int(planet_id)
@@ -156,7 +156,7 @@ def delete_planet(planet_id):
 
 # def display_one_planet(planet_id):
 #     """Returns response body: dictionary literal for one planet with matching planet_id"""
-#     planet = validate_planet(planet_id)
+#     planet = validate_model(planet_id)
 
 #     return {
 #         "id": planet.id,
