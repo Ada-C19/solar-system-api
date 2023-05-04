@@ -4,7 +4,7 @@ def test_to_dict_no_missing_data():
     # Arrange
     test_data = Planet(id = 1,
                     name="Mercury",
-                    description="Smallest planet in the solar system. Its year is 88 days long. Closest to the Sun",
+                    description="Smallest planet in the solar system. Its year is 88 days long. Closest to the Sun.",
                     type="Rocky/Terrestrial")
 
     # Act
@@ -51,7 +51,8 @@ def test_to_dict_missing_title():
 def test_to_dict_missing_description():
     # Arrange
     test_data = Planet(id = 1,
-                    name="Mercury")
+                    name="Mercury",
+                    type="Rocky/Terrestrial")
 
     # Act
     result = test_data.to_dict()
