@@ -1,6 +1,6 @@
 import pytest
 from werkzeug.exceptions import HTTPException
-from app.routes import validate_model
+from app.routes_helpers import validate_model
 from app.models.planet import Planet
 
 def test_get_all_planets_with_no_records(client):
