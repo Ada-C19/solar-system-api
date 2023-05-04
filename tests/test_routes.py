@@ -52,4 +52,9 @@ def test_add_one_planet_to_empty_db(client):
     response_body = response.get_json()
 
     assert response.status_code == 201
-    assert response_body == "Planet Planet1 successfully created"
+    assert response_body == dict(
+        id = 1,
+        name = "Planet1",
+        description = "First planet",
+        diameter = 5000
+    )
