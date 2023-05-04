@@ -1,7 +1,7 @@
 import pytest
 from app import create_app, db
 from flask.signals import request_finished
-from app.models.planet import Book
+from app.models.planet import Planet
 
 @pytest.fixture
 def app():
@@ -21,3 +21,15 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def one_planet(app):
+    planet = Planet(
+        name = "test_name",
+        description = "test_description",
+        mass = "test_mass"
+    )
+    db.session.add(planet)
+    db.session.commit()
+
+    return planet
