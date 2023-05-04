@@ -29,7 +29,6 @@ def create_planet():
 
     return make_response(jsonify(f"Planet {new_planet.name} successfully created")), 201
 
-
 # READ ALL PLANETS
 @bp.route("", methods=["GET"])
 def read_all_planets():
@@ -64,7 +63,7 @@ def update_planet(planet_id):
     
     db.session.commit()
 
-    return make_response(jsonify(f"Planet {update_planet.name} successfully updated"))
+    return make_response(jsonify(f"Planet {planet.name} successfully updated"))
 
 # DELETE A PLANET
 @bp.route("/<planet_id>", methods=["DELETE"])
@@ -75,4 +74,3 @@ def delete_planet(planet_id):
     db.session.commit()
 
     return make_response(jsonify(f"Planet {planet.name} successfully deleted"))
-

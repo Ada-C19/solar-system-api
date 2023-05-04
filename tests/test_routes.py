@@ -140,8 +140,3 @@ def test_create_one_planet_with_extra_keys(client, two_saved_planets):
     # Assert
     assert response.status_code == 201
     assert response_body == "Planet New planet successfully created"
-
-
-
-
-

@@ -7,7 +7,7 @@ def test_to_dict_no_missing_data():
                     name="Arrakis",
                     description="Spicy",
                     position="#82")
-
+    
     # Act
     result = test_data.to_dict()
 
