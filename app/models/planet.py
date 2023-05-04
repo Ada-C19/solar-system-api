@@ -7,6 +7,12 @@ class Planet(db.Model):
     description = db.Column(db.String)
     moons = db.Column(db.Integer)
 
+    @classmethod 
+    def dict_to_model(cls, data_dict):
+        return cls(name = data_dict["name"],
+                description = data_dict["description"],
+                moons = data_dict["moons"])
+
     def make_planet_dict(self):
         return dict(
             id=self.id,
