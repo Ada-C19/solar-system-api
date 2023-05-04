@@ -58,21 +58,3 @@ def get_all_planets(app):
     db.session.commit()
 
     return planets
-
-# @pytest.fixture
-# def get_all_planets(app):
-#     planets = [
-#         Planet("Mercury", "hot", "grey"), 
-#         Planet("Venus", "Planet of love", "orange"), 
-#         Planet("Earth", "Home", "blue-green"),
-#         Planet("Mars", "volatile", "red"), 
-#         Planet("Jupiter", "stormy", "beige"), 
-#         Planet("Saturn", "the rings", "yellow"), 
-#         Planet("Uranus", "the single ring", "light blue"), 
-#         Planet("Neptune", "far away", "blue") 
-#     ]
-
-#     db.session.add_all(planets)
-#     db.session.commit()
-
-#     return planets
