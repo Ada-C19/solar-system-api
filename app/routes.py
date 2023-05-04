@@ -18,7 +18,7 @@ from app.models.planet import Planet
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 #VALIDATE PLANET HELPER FN
-def validate_planet(planet_id):
+def validate_planet(planet_id): # ONLY TO GET & PUT ONE PLANET_ID
     try:
         planet_id = int(planet_id)
     except:
@@ -28,7 +28,7 @@ def validate_planet(planet_id):
 
     if not planet:    
         abort(make_response({"message":f"planet {planet_id} not found"}, 404))
-    
+    #potentially thinking of making a loop to go through each PLANET in planetS
     return planet
 
 # GET ONE ENDPOINT
@@ -70,7 +70,7 @@ def delete_planet(planet_id):
     return make_response(f"Planet {planet.id} successfully deleted!"), 200
 
 
-@planets_bp.route("", methods=["GET", "POST"])
+@planets_bp.route("", methods=["GET", "POST"]) # Refactor & split into 2 methods # Validation for POST dictionary
 def handle_planets():
     if request.method == "GET":
         planets = Planet.query.all()
