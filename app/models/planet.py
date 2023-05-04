@@ -11,5 +11,5 @@ class Planet(db.Model):
             "id": self.id,
             "name": self.name,
             "description": self.description,
-            "solar day": self.solar_day
+            "solar_day": self.solar_day
         }

@@ -24,7 +24,7 @@ def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
                         description=request_body["description"],
-                        solar_day=request_body["solar day"])
+                        solar_day=request_body["solar_day"])
     db.session.add(new_planet)
     db.session.commit()
 
@@ -41,12 +41,7 @@ def get_all_planets():
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)
 
-    return {
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "solar day": planet.solar_day
-    }
+    return planet.to_dict()
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def replace_planet(planet_id):
@@ -54,7 +49,7 @@ def replace_planet(planet_id):
     planet_to_update = request.get_json()
     planet.name = planet_to_update["name"]
     planet.description = planet_to_update["description"]
-    planet.solar_day = planet_to_update["solar day"]
+    planet.solar_day = planet_to_update["solar_day"]
 
     db.session.commit()
 
