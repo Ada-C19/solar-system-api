@@ -17,7 +17,7 @@ from app import db
 
 planets_bp= Blueprint('planets', __name__,url_prefix='/planets')
 # Helper function
-def validate_planet(cls,model_id):
+def validate_model(cls,model_id):
     try:
         model_id = int(model_id)
     except:
@@ -56,14 +56,14 @@ def read_all_planets():
     
 @planets_bp.route("/<planet_id>", methods= ['GET'])
 def get_one_planet(planet_id):
-    planet = validate_planet(Planet, planet_id)
+    planet = validate_model(Planet, planet_id)
     
     return planet.to_dict()
     
     
 @planets_bp.route("/<planet_id>", methods= ['PUT'])
 def update_planet(planet_id):
-    planet = validate_planet(Planet, planet_id)
+    planet = validate_model(Planet, planet_id)
     request_body = request.get_json()
     planet.name = request_body["name"]
     planet.description = request_body["description"]
@@ -74,7 +74,7 @@ def update_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods= ['DELETE'])
 def delete_planet(planet_id):
-    planet = validate_planet(Planet, planet_id)
+    planet = validate_model(Planet, planet_id)
     db.session.delete(planet)
     db.session.commit()
     return make_response(jsonify(f"Planet {planet_id} deleted successfully"))
