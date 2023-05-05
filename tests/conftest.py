@@ -24,12 +24,20 @@ def client(app):
 
 @pytest.fixture
 def one_planet(app):
-    planet = Planet(
-        name = "test_name_1",
-        description = "test_description_1",
-        mass = 1.000
-    )
-    db.session.add(planet)
+    return {
+        "name" : "test_name_1",
+        "description" : "test_description_1",
+        "mass" : 1.000}
+
+
+@pytest.fixture
+def get_planets(app):
+    test_planet_2 = Planet(name = "test_name_2", description = "test_description_2", mass = 2.000)
+    test_planet_3 = Planet(name = "test_name_3", description = "test_description_3", mass = 3.000)
+
+    test_planets = [test_planet_2, test_planet_3]
+
+    db.session.add_all(test_planets)
     db.session.commit()
 
-    return planet
+    return test_planets

@@ -15,3 +15,4 @@ class Planet(db.Model):
                 'description': self.description,
                 'mass': self.mass,
                 }
+        
