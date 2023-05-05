@@ -40,9 +40,7 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 @planets_bp.route("", methods=['POST'])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(name=request_body["name"],
-                        description=request_body["description"],
-                        distance_from_sun=request_body["distance from sun"])
+    new_planet = Planet.from_dict(request_body)
     
     db.session.add(new_planet)
     db.session.commit()
@@ -55,7 +53,6 @@ def create_planet():
             "msg": "Successfully created"
         }, 201)
 
-    # return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 @planets_bp.route("", methods=['GET'])
 def get_planets():
