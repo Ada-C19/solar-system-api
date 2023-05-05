@@ -34,14 +34,13 @@ planet_bp = Blueprint("planet", __name__, url_prefix="/planet")
 @planet_bp.route("", methods=["POST"])
 def add_planet():
     request_body = request.get_json()
+    new_planet = Planet.from_dict(request_body)
+
     # new_planet = Planet(
     #     name = request_body['name'],
     #     description = request_body['description'],
     #     size = request_body['size']
     # )
-    #using the cls method
-    new_planet = Planet.from_dict(request_body)
-
 
     db.session.add(new_planet)
     db.session.commit()
@@ -53,7 +52,6 @@ def add_planet():
         "size": new_planet.size
     }
 
- 
     return jsonify(planet_dict), 201
 
 
@@ -75,11 +73,11 @@ def get_planets():
     return jsonify(response), 200
 
 
-#GET ONE
+# GET ONE
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
 
-    planet = validate_planet(id)
+    planet = validate_planet(Planet, id)
 
     return planet.to_dict(), 200
 
@@ -88,7 +86,7 @@ def get_one_planet(id):
 @planet_bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
 
-    planet = validate_planet(id)
+    planet = validate_planet(Planet,id)
     request_data = request.get_json()
 
     planet.name = request_data["name"]
@@ -103,7 +101,7 @@ def update_planet(id):
 # DELETE 
 @planet_bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
-    planet = validate_planet(id)
+    planet = validate_planet(Planet,id)
 
     db.session.delete(planet)
     db.session.commit()
@@ -113,14 +111,13 @@ def delete_planet(id):
 
 
 
-#helper function
-def validate_planet(id):
+# helper function
+def validate_planet(model,planet_id):
     try:
-        planet_id = int(id)
+        planet_id = int(planet_id)
 
     except ValueError:
-        return abort(make_response({"message": f"invalide id {id} not found"}, 400))
-    
+        return abort(make_response({"message": f"invalide id {planet_id} not found"}, 400))
 
-    return Planet.query.get_or_404(planet_id)
+    return model.query.get_or_404(planet_id)
    

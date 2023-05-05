@@ -12,11 +12,11 @@ class Planet(db.Model):
             "description":self.description,
             "size": self.size
         }
-    #changes
+    
     @classmethod
-    def from_dict(cls, planet_data):
+    def from_dict(cls,planet_data): # cls replace the class Planet
         return cls(
             name = planet_data["name"],
             description = planet_data["description"],
-            size = planet_data["size"]
+            size =  planet_data["size"]
         )
