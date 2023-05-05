@@ -34,11 +34,15 @@ planet_bp = Blueprint("planet", __name__, url_prefix="/planet")
 @planet_bp.route("", methods=["POST"])
 def add_planet():
     request_body = request.get_json()
-    new_planet = Planet(
-        name = request_body['name'],
-        description = request_body['description'],
-        size = request_body['size']
-    )
+    # new_planet = Planet(
+    #     name = request_body['name'],
+    #     description = request_body['description'],
+    #     size = request_body['size']
+    # )
+    #using the cls method
+    new_planet = Planet.from_dict(request_body)
+
+
     db.session.add(new_planet)
     db.session.commit()
 
