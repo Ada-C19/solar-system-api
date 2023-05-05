@@ -35,3 +35,18 @@ def test_get_planets_with_two_records(client, two_planets):
     # Assert
     assert response.status_code == 200
     assert response_body == [{"id": 1,"name":"Venus","description":"Gassy love goddess","place":2},{"id" : 2, "name":"Earth","description" : "le home", "place": 3}]  
+
+#POST /planets with a JSON request body returns a 201
+
+def test_JSON_request_returns_201(client, two_planets):
+
+    response = client.post("/planets", json={
+        "name": "Venus",
+        "description":"Gassy love goddess",
+        "place":2})
+
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == "Planet Venus succesfully created"
+    
