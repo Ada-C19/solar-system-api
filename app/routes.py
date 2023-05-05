@@ -67,13 +67,10 @@ def get_planets():
 
     planets_response = []
     for planet in planets:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "distance from sun": planet.distance_from_sun
-        })
-    return jsonify(planets_response)
+        planets_response.append(planet.to_dict())
+    
+    return jsonify(planets_response), 200
+
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_one_planet(planet_id):
