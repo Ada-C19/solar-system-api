@@ -23,11 +23,17 @@ def create_planet():
 @planets_bp.route("", methods=["GET"])
 def get_planets():
     mass = request.args.get("mass")
+    # min_mass = request.args.get("min_mass")
+    # max_mass = request.args.get("max_mass")
 
     planets = Planet.query
 
     if mass:
-        planets = planets.filter_by(mass=mass)
+        planets = planets.filter_by(mass = mass)    
+    # if min_mass:
+    #     planets = planets.filter(Planet.mass >= min_mass)
+    # if min_mass:
+    #     planets = planets.filter_by(Planet.mass <= max_mass)
 
     planets = planets.all()
 

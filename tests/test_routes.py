@@ -68,6 +68,7 @@ def test_delete_one_planet(client, get_planets):
 def test_update_one_planet(client, get_planets, one_planet):
     response = client.put("/planets/2", json=one_planet)
     response_body = response.get_json()
+    
     response_array = client.get("/planets")
     updated_array = response_array.get_json()
 
