@@ -9,7 +9,7 @@ def test_get_all_planets_with_empty_db_returns_empty_list(client):
     assert response.status_code == 200
 
 
-def test_get_one_planet_returns_correct_pkanet(client, two_planets):
+def test_get_one_planet_returns_correct_planet(client, two_planets):
     # ACT
     response = client.get('/planets/1')
     response_body = response.get_json()

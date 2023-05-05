@@ -20,18 +20,15 @@ from app.models.planet import Planet
 #     Planet(8, "Neptune", "blue", 30.06)
 # ]
 
-def validate_planet(planet_id):
+def get_valid_item_by_id(model, id):
     try:
-        planet_id = int(planet_id)
+        id = int(id)
     except:
-        abort(make_response({'msg': f"Invalid id '{planet_id}'"}, 400))
+        abort(make_response({'msg': f"Invalid id '{id}'"}, 400))
 
-    planet = Planet.query.get(planet_id)
-
-    if planet:
-        return planet
-    else: 
-        return abort(make_response({'msg': f"No planet with id {planet_id}"}, 404))
+    item = model.query.get(id)
+    
+    return item if item else abort(make_response({'msg': f"No {model.__name__} with id {id}"}, 404))
 
 
 
@@ -72,7 +69,7 @@ def get_planets():
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_one_planet(planet_id):
 
-    planet = validate_planet(planet_id)
+    planet = get_valid_item_by_id(Planet, planet_id)
 
     return ({
             "id": planet.id,
@@ -87,7 +84,7 @@ def update_one_planet(planet_id):
     # Get the data from the request body
     request_body = request.get_json()
 
-    planet_to_update = validate_planet(planet_id)
+    planet_to_update = get_valid_item_by_id(Planet, planet_id)
 
     planet_to_update.name = request_body["name"]
     planet_to_update.description = request_body["description"]
@@ -106,7 +103,7 @@ def update_one_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_one_planet(planet_id):
-    planet_to_delete = validate_planet(planet_id)
+    planet_to_delete = get_valid_item_by_id(Planet, planet_id)
 
     db.session.delete(planet_to_delete)
     db.session.commit()
