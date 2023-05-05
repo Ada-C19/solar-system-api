@@ -22,7 +22,15 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def get_planets():
-    planets = Planet.query.all()
+    mass = request.args.get("mass")
+
+    planets = Planet.query
+
+    if mass:
+        planets = planets.filter_by(mass=mass)
+
+    planets = planets.all()
+
     request_body = []
     for planet in planets:
         request_body.append(
