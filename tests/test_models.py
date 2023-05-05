@@ -109,6 +109,7 @@ def test_from_dict_with_extra_keys():
         "extra": "some stuff",
         "name": "New Planet",
         "description": "The Best Planet!",
+        "color": "pink",
         "another": "last value"
     }
     
