@@ -7,11 +7,7 @@ planet_bp = Blueprint("planet", __name__, url_prefix="/planet")
 @planet_bp.route("", methods=["POST"])
 def add_planet():
     request_body = request.get_json()
-    new_planet = Planet(
-        name = request_body["name"],
-        description = request_body["description"],
-        num_moons = request_body["num_moons"]
-    )
+    new_planet = Planet.from_dict(request_body)
 
     db.session.add(new_planet)
     db.session.commit()
@@ -34,22 +30,22 @@ def get_planets():
 
 @planet_bp.route("/<p_id>", methods=["GET"])
 def get_one_planet(p_id):
-    planet = validate_planet(p_id)
+    planet = validate_item(Planet, p_id)
 
     return planet.to_dict(), 200
 
 
-def validate_planet(p_id):
+def validate_item(model, item_id):
     try:
-        planet_id = int(p_id)
+        item_id = int(item_id)
     except ValueError:
-        return abort(make_response({"message": f"invalid id: {p_id}"}, 400))
+        return abort(make_response({"message": f"invalid id: {item_id}"}, 400))
     
-    return Planet.query.get_or_404(p_id)
+    return model.query.get_or_404(item_id)
 
 @planet_bp.route("/<p_id>", methods=["PUT"])
 def update_planet(p_id):
-    planet = validate_planet(p_id)
+    planet = validate_item(Planet, p_id)
 
     request_data = request.get_json()
 
@@ -63,7 +59,7 @@ def update_planet(p_id):
 
 @planet_bp.route("/<p_id>", methods=["DELETE"])
 def delete_planet(p_id):
-    planet = validate_planet(p_id)
+    planet = validate_item(Planet, p_id)
 
     db.session.delete(planet)
 

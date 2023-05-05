@@ -60,11 +60,19 @@ def test_put_planet(client, two_planets):
     assert response.status_code == 200
     assert response_body == {"msg": "planet 1 successfully updated"}
 
-def test_delet_planet(client, two_planets):
+def test_delete_planet(client, two_planets):
     response = client.delete("/planet/2")
 
     response_body = response.get_json()
 
     assert response.status_code == 200
     assert response_body == {"msg": "planet 2 successfully deleted"}
+
+def test_get_no_data_returns_404(client):
+    response = client.get("/planet/20")
+
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+
 
