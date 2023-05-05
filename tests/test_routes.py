@@ -21,7 +21,7 @@ def test_get_one_planet_returns_seeded_planet(client, one_planet):
     assert response_body["id"] == one_planet.id
     assert response_body["name"] == one_planet.name
     assert response_body["description"] == one_planet.description
-    assert response_body["mass"] == one_planet.mass
+    assert response_body["mass"] == str(one_planet.mass)
 
 
 def test_create_planet_happy_path(client):
@@ -30,7 +30,8 @@ def test_create_planet_happy_path(client):
     EXPECTED_PLANET = {
         "name": "test_name",
         "description": "test_description",
-        "mass": "mass"}
+        "mass": 1,
+        }
 
     #Assert
     response = client.post("/planets", json=EXPECTED_PLANET)
@@ -38,7 +39,7 @@ def test_create_planet_happy_path(client):
 
     actual_planet = Planet.query.get(1)
     assert response.status_code == 201
-    assert response_body == f"Planets {EXPECTED_PLANET["name"]} successfully created"
+    assert response_body == f"New planet {EXPECTED_PLANET['name']} successfully created, biatch!"
     assert actual_planet.name == EXPECTED_PLANET["name"]
     assert actual_planet.description == EXPECTED_PLANET["description"]
     assert actual_planet.mass == EXPECTED_PLANET["mass"]

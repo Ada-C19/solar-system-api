@@ -25,9 +25,9 @@ def client(app):
 @pytest.fixture
 def one_planet(app):
     planet = Planet(
-        name = "test_name",
-        description = "test_description",
-        mass = "test_mass"
+        name = "test_name_1",
+        description = "test_description_1",
+        mass = 1.000
     )
     db.session.add(planet)
     db.session.commit()
