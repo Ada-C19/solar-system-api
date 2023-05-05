@@ -12,6 +12,7 @@ def create_planet():
 
     db.session.add(new_planet)
     db.session.commit()
+
     return make_response(jsonify(new_planet.to_dict()), 201)
 
 @planet_bp.route("", methods=["GET"])
@@ -19,6 +20,7 @@ def read_all_planets():
     name_query = request.args.get("name")
     description_query = request.args.get("description")
     diameter_query = request.args.get("diameter")
+
     planet_query = Planet.query
 
     if name_query:
