@@ -34,11 +34,14 @@ planet_bp = Blueprint("planet", __name__, url_prefix="/planet")
 @planet_bp.route("", methods=["POST"])
 def add_planet():
     request_body = request.get_json()
-    new_planet = Planet(
-        name = request_body['name'],
-        description = request_body['description'],
-        size = request_body['size']
-    )
+    new_planet = Planet.from_dict(request_body)
+
+    # new_planet = Planet(
+    #     name = request_body['name'],
+    #     description = request_body['description'],
+    #     size = request_body['size']
+    # )
+
     db.session.add(new_planet)
     db.session.commit()
 
@@ -49,7 +52,6 @@ def add_planet():
         "size": new_planet.size
     }
 
- 
     return jsonify(planet_dict), 201
 
 
@@ -71,7 +73,7 @@ def get_planets():
     return jsonify(response), 200
 
 
-#GET ONE
+# GET ONE
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
 
@@ -109,7 +111,7 @@ def delete_planet(id):
 
 
 
-#helper function
+# helper function
 def validate_planet(id):
     try:
         planet_id = int(id)
