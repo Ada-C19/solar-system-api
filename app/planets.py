@@ -77,7 +77,7 @@ def get_planets():
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
 
-    planet = validate_planet(id)
+    planet = validate_planet(Planet, id)
 
     return planet.to_dict(), 200
 
@@ -86,7 +86,7 @@ def get_one_planet(id):
 @planet_bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
 
-    planet = validate_planet(id)
+    planet = validate_planet(Planet,id)
     request_data = request.get_json()
 
     planet.name = request_data["name"]
@@ -101,7 +101,7 @@ def update_planet(id):
 # DELETE 
 @planet_bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
-    planet = validate_planet(id)
+    planet = validate_planet(Planet,id)
 
     db.session.delete(planet)
     db.session.commit()
@@ -112,13 +112,12 @@ def delete_planet(id):
 
 
 # helper function
-def validate_planet(id):
+def validate_planet(model,planet_id):
     try:
-        planet_id = int(id)
+        planet_id = int(planet_id)
 
     except ValueError:
-        return abort(make_response({"message": f"invalide id {id} not found"}, 400))
-    
+        return abort(make_response({"message": f"invalide id {planet_id} not found"}, 400))
 
-    return Planet.query.get_or_404(planet_id)
+    return model.query.get_or_404(planet_id)
    
