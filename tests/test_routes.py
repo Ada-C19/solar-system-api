@@ -15,4 +15,14 @@ def test_get_all_planets_with_two_records(client, two_planets):
     # Assert
     assert response.status_code == 200
     assert response_body == {"id": 1,"name":"Venus","description":"Gassy love goddess","place":2}
-#{"id" : 2, "name":"Earth","description" : "le home", "place": 3}]         
+#{"id" : 2, "name":"Earth","description" : "le home", "place": 3}]  
+
+# #GET /planets/1 with no data in test database (no fixture) returns a 404   
+def test_empty_database_returns_404(client):
+
+    #act
+    response = client.get("planets/1")
+    response_body = response.get_json()
+    #assert   
+    assert response.status_code == 404
+    assert response_body == {"message":"planet 1 not found"}

@@ -33,3 +33,5 @@ def two_planets(app):
     
     db.session.add_all([venus,earth])
     db.session.commit()
+
+
