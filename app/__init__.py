@@ -28,6 +28,4 @@ def create_app(test_config=None):
     from .routes import bp
     app.register_blueprint(bp)
 
-    # from app.models.planet import Planet
-
     return app
