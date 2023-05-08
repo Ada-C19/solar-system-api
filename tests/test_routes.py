@@ -49,3 +49,20 @@ def test_create_one_planet(client):
     assert response_body == f"Planet {expected_planet['name']} successfully created."
     assert expected_planet['name'] == actual_planet.name
 
+def test_update_book(client, two_saved_planets):
+    # Arrange
+    test_data = {
+        "name": "Mercurius",
+        "description": "The Best!",
+        "association": "Communication"
+    }
+
+    # Act
+    response = client.put("/planets/1", json=test_data)
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert Planet.query.get(1).name == "Mercurius"
+    assert Planet.query.get(1).association == "Communication"
+    assert Planet.query.get(1).description == "The Best!"
