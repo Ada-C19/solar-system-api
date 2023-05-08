@@ -10,7 +10,7 @@ bp = Blueprint("planets", __name__, url_prefix="/planets")
 def read_one_planet(id):
     planet = validate_model(Planet, id)
 
-    return planet.to_dict()
+    return jsonify(planet.to_dict())
 
 
 @bp.route("", methods=["GET"])
@@ -43,11 +43,11 @@ def update_planet(id):
     planet = validate_model(Planet, id)
     request_body = request.get_json()
 
-    Planet.from_dict(request_body)
-
+    planet.update_from_dict(request_body)
+    
     db.session.commit()
 
-    return make_response(jsonify(f"Planet #{planet.id} successfully updated"))
+    return make_response(jsonify(planet.to_dict()),200)
 
 
 @bp.route("/<id>", methods=["DELETE"])
@@ -57,4 +57,4 @@ def delete_planet(id):
     db.session.delete(planet)
     db.session.commit()
 
-    return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
+    return make_response(jsonify(f"deleted:{planet.to_dict()}"), 200)

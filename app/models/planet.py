@@ -1,4 +1,5 @@
 from app import db
+from flask import abort, make_response
 
 
 class Planet(db.Model):
@@ -17,8 +18,20 @@ class Planet(db.Model):
     
     @classmethod
     def from_dict(cls, planet_data):
-        new_planet = Planet(name=planet_data["name"],
-                            description=planet_data["description"],
-                            association=planet_data["association"],
-                            )
+        try:
+            new_planet = Planet(name=planet_data["name"],
+                                description=planet_data["description"],
+                                association=planet_data["association"],
+                                )
+        except KeyError: 
+            abort(make_response({"message": f"Provided planet data was invalid"}, 400))
+        
         return new_planet
+
+    def update_from_dict(self, planet_data):
+        try:
+            self.name = planet_data["name"]
+            self.description = planet_data["description"]
+            self.association = planet_data["association"]
+        except KeyError: 
+            abort(make_response({"message": f"Provided planet data was invalid"}, 400))

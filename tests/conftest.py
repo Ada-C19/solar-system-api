@@ -29,8 +29,10 @@ def client(app):
 @pytest.fixture
 def two_saved_planets(app):
     # Arrange
-    mercury = Planet(name="Mercury", description="smallest planet", association="Wednesday")
-    mars = Planet(name="Mars", description="spicy, red one", association="Tuesday")
+    planet1 = Planet(name="Mercury", description="smallest planet", association="Wednesday")
+    planet2 = Planet(name="Mars", description="spicy, red one", association="Tuesday")
 
-    db.session.add_all([mercury, mars])
+    db.session.add_all([planet1, planet2])
     db.session.commit()
+
+    return [planet1, planet2]
