@@ -1,5 +1,6 @@
 from app import db
 from app.models.planet import Planet
+from app.models.moon import Moon
 from flask import Blueprint, jsonify, make_response, request, abort
 from .routes_helpers import validate_model
 
@@ -66,4 +67,16 @@ def update_planet(planet_id):
     db.session.commit()
 
     return make_response(f"planet {planet.name} succesfully updated",200)
+
+@planets_bp.route("/<planet_id>/moons", methods=["POST"])
+def create_moon(planet_id):
+    planet = validate_model(planet_id)
+    request_body = request.get_json()
+
+    new_moon = Moon.dict_to_model(request_body,planet)
+
+    db.session.add(new_moon)
+    db.session.commit()
+
+    return make_response(f"Cat {new_moon.name} successfully created with Caretaker {planet.name}", 201)
 
