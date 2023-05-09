@@ -17,14 +17,7 @@ def add_moon():
     db.session.add(new_moon)
     db.session.commit()
 
-    # moon_dict = {
-    #     "id": new_moon.moon_id,
-    #     "name": new_moon.name
-    # }
-
-    return jsonify(
-                    {new_moon.to_dict()}
-                ), 201
+    return jsonify(new_moon.to_dict()), 200
 
 
 # GET ALL
