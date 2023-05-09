@@ -100,8 +100,8 @@ def validate_planet(model,planet_id):
    
 
 @planet_bp.route("/<planet_id>/moon", methods = ["POST"])
-def add_moon_to_planet(id):
-    planet = validate_planet(Planet,id)
+def add_moon_to_planet(planet_id):
+    planet = validate_planet(Planet, planet_id)
     request_body = request.get_json()
     moon = Moon.from_dict(request_body)
     moon.planet = planet
