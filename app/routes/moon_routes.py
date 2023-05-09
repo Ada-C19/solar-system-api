@@ -31,15 +31,3 @@ def get_all_moons():
     moons_list=[moon.make_moon_dict()for moon in moons]
 
     return jsonify(moons_list), 200
-
-@moons_bp.route("/<planet_id>/planets", methods=["GET"])
-def handle_moon_from_planets(planet_id):
-    planet = validate_model(planet_id)
-
-    moons = Moon.query.filter_by(planet_id)
-
-    # moons_response = []
-    # for planet in planet.moons:
-    # moons_response.append(planet.to_dict())
-
-    return jsonify(moons), 200
