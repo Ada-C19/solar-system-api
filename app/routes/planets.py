@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, make_response, abort
 from app import db
 from app.model.planets_model import Planet
+from app.model.moon import Moon
 
 
 
@@ -97,3 +98,15 @@ def validate_planet(model,planet_id):
 
     return model.query.get_or_404(planet_id)
    
+
+@planet_bp.route("/<planet_id>/moon", methods = ["POST"])
+def add_moon_to_planet(id):
+    planet = validate_planet(Planet,id)
+    request_body = request.get_json()
+    moon = Moon.from_dict(request_body)
+    moon.planet = planet
+
+    db.session.add(moon)
+    db.session.commit()
+
+    return jsonify({"msg": f"created moon with {planet.id}."})

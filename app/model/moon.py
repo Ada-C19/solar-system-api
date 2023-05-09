@@ -2,15 +2,14 @@ from app import db
 
 
 class Moon(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    moon_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
-    planet_id = db.Column(db.Integer, db.ForeignKey("planet.id"))
-    planet = db.relationship("Planet", back_populates ="moons")
+    planets = db.relationship("Planet", backref="moon", lazy = True)
 
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "id": self.moon_id,
             "name": self.name,
 
         }

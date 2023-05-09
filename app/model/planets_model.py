@@ -4,7 +4,7 @@ class Planet(db.Model):
     name  = db.Column(db.String)
     description = db.Column(db.String)
     size = db.Column(db.Integer)
-    moons = db.relationship("Moon", back_populates="planet")
+    moon_id = db.Column(db.Integer, db.ForeignKey("moon.moon_id"), nullable = True)
 
     def to_dict(self):
         return {
