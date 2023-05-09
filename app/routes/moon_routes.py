@@ -16,7 +16,30 @@ def make_new_moon():
     db.session.add(new_moon)
     db.session.commit()
 
-    return make_response(f"Planet {new_moon.name} successfully created", 201)
+    return make_response(f"Moon {new_moon.name} successfully created", 201)
 
-# @moons_bp.route("", methods=["GET"])
-# def get_moon():
+@moons_bp.route("", methods=["GET"])
+def get_all_moons():
+
+    name_param = request.args.get("name")
+    
+    if name_param:
+        moons = Moon.query.filter_by(name=name_param)
+    else:
+        moons = Moon.query.all()
+
+    moons_list=[moon.make_moon_dict()for moon in moons]
+
+    return jsonify(moons_list), 200
+
+@moons_bp.route("/<planet_id>/planets", methods=["GET"])
+def handle_moon_from_planets(planet_id):
+    planet = validate_model(planet_id)
+
+    moons = Moon.query.filter_by(planet_id)
+
+    # moons_response = []
+    # for planet in planet.moons:
+    # moons_response.append(planet.to_dict())
+
+    return jsonify(moons), 200

@@ -70,13 +70,29 @@ def update_planet(planet_id):
 
 @planets_bp.route("/<planet_id>/moons", methods=["POST"])
 def create_moon(planet_id):
-    planet = validate_model(planet_id)
+    planet = validate_model(Planet, planet_id)
     request_body = request.get_json()
 
-    new_moon = Moon.dict_to_model(request_body,planet)
-
+    new_moon = Moon(
+        name=request_body["name"],
+        planet = planet 
+    )
     db.session.add(new_moon)
     db.session.commit()
+    return make_response(jsonify(f"Moon {new_moon.name} successfully created with Planet {planet.name}", 201))
 
-    return make_response(f"Cat {new_moon.name} successfully created with Caretaker {planet.name}", 201)
+    # new_moon_model = Moon.dict_to_model(request_body)
+    # db.session.add(new_moon_model)
+    # db.session.commit()
 
+    # return make_response (f"Moon {new_moon_model.name} successfully created with Planet {planet.name}", 201)
+
+@planets_bp.route("/<planet_id>/moons", methods=["GET"])
+def get_moons_from_planets(planet_id):
+    planet = validate_model(Planet, planet_id)
+
+    moons_response = []
+    for moon in planet.moons:
+        moons_response.append(moon.make_moon_dict())
+
+    return jsonify(moons_response), 200

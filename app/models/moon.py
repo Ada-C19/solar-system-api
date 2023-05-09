@@ -4,7 +4,7 @@ class Moon(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
-    planet= db.relationship("Planet", back_populates="moon")
+    planet= db.relationship("Planet", back_populates="moons")
     planet_id= db.Column(db.Integer, db.ForeignKey('planet.id'))
 
     @classmethod 
@@ -13,6 +13,5 @@ class Moon(db.Model):
     
     def make_moon_dict(self):
         return dict(
-            id=self.id,
             name=self.name
         )
