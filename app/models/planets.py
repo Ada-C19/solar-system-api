@@ -1,10 +1,10 @@
 from app import db
 
-class Planets():
-    def __init__(self, id, name, description):
-        self.id = id
-        self.name = name
-        self.description = description
+class Planets(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String)
+    description = db.Column(db.String)
+    
     
     def to_dict(self):
         planet_as_dict = {}
