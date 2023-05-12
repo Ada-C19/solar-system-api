@@ -35,8 +35,9 @@ def read_all_planets():
         planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def read_one_planet(planet_id):
-#     planet = validate_planet(planet_id)
-#     return planet.to_dict()
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def read_one_planet(planet_id):
+    planet = Planets.query.get(planet_id)
+    # planet = validate_planet(planet_id)
+    return planet.to_dict()
 
