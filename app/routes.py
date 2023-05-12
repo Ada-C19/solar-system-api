@@ -27,12 +27,13 @@ def create_planet():
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 
-# @planets_bp.route("", methods=["GET"])
-# def read_all_planets():
-#     planets_response = []
-#     # for planet in planets:
-#     #     planets_response.append(planet.to_dict())
-#     return jsonify(planets_response)
+@planets_bp.route("", methods=["GET"])
+def read_all_planets():
+    planets = Planets.query.all()
+    planets_response = []
+    for planet in planets:
+        planets_response.append(planet.to_dict())
+    return jsonify(planets_response)
 
 # @planets_bp.route("/<planet_id>", methods=["GET"])
 # def read_one_planet(planet_id):
