@@ -30,7 +30,13 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def read_all_planets():
-    planets = Planets.query.all()
+    # planets = Planets.query.all()
+    title_query = request.args.get("title")
+    if title_query:
+        planets = Planets.query.filter_by(title=title_query)
+    else:
+        planets = Planets.query.all()
+
     planets_response = []
     for planet in planets:
         planets_response.append(planet.to_dict())
