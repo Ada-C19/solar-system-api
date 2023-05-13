@@ -7,7 +7,7 @@ def test_len_of_empty_list(client):
 
 
 ##1. `GET` `/planets/1` returns a response body that matches our fixture
-def test_get_one_planet_by_id(client, create_one_planet):
+def test_get_one_planet_by_id(client, get_one_planet):
     # act
     response = client.get("/planets/1")
     response_body = response.get_json()
@@ -63,3 +63,12 @@ def test_read_all_planets_returns_ok(client, read_all_planets):
 
 
 ##4. `POST` `/planets` with a JSON request body returns a `201`
+def test_post_one_book(client):
+    response = client.post("/planets", json={
+        "name": "Venus",
+        "description": "Girls are made here!"
+    })
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == "Planet Venus successfully created"

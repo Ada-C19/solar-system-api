@@ -25,7 +25,7 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture 
-def create_one_planet():
+def get_one_planet():
     new_planet = Planets(name="Saturn",
                         description="Planet has rings.")
     
@@ -41,3 +41,4 @@ def read_all_planets():
     
     db.session.add_all([saturn, jupiter])
     db.session.commit()
+
